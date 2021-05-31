@@ -1,0 +1,15 @@
+2021-05-31 19:08:42.534 2704-2704/? I/Zygote: seccomp disabled by setenforce 0
+2021-05-31 19:08:42.535 2704-2704/? I/ample.testsenl: Late-enabling -Xcheck:jni
+2021-05-31 19:08:42.542 2704-2704/com.example.testsenla E/ample.testsenl: Unknown bits set in runtime_flags: 0x8000
+2021-05-31 19:08:42.542 2704-2704/com.example.testsenla W/ample.testsenl: Unexpected CPU variant for X86 using defaults: x86
+2021-05-31 19:08:42.782 2704-2737/com.example.testsenla D/libEGL: Emulator has host GPU support, qemu.gles is set to 1.
+2021-05-31 19:08:42.777 2704-2704/com.example.testsenla I/RenderThread: type=1400 audit(0.0:21): avc: denied { write } for name="property_service" dev="tmpfs" ino=11451 scontext=u:r:untrusted_app:s0:c102,c256,c512,c768 tcontext=u:object_r:property_socket:s0 tclass=sock_file permissive=1 app=com.example.testsenla
+2021-05-31 19:08:42.824 2704-2737/com.example.testsenla D/libEGL: loaded /vendor/lib/egl/libEGL_emulation.so
+2021-05-31 19:08:42.825 2704-2737/com.example.testsenla D/libEGL: loaded /vendor/lib/egl/libGLESv1_CM_emulation.so
+2021-05-31 19:08:42.826 2704-2737/com.example.testsenla D/libEGL: loaded /vendor/lib/egl/libGLESv2_emulation.so
+2021-05-31 19:08:42.852 2704-2704/com.example.testsenla W/ample.testsenl: Accessing hidden method Landroid/view/View;->computeFitSystemWindows(Landroid/graphics/Rect;Landroid/graphics/Rect;)Z (greylist, reflection, allowed)
+2021-05-31 19:08:42.852 2704-2704/com.example.testsenla W/ample.testsenl: Accessing hidden method Landroid/view/ViewGroup;->makeOptionalFitsSystemWindows()V (greylist, reflection, allowed)
+2021-05-31 19:08:43.086 2704-2735/com.example.testsenla W/OpenGLRenderer: Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+2021-05-31 19:08:43.126 2704-2735/com.example.testsenla D/EGL_emulation: eglCreateContext: 0xdcabac80: maj 3 min 0 rcv 3
+2021-05-31 19:08:43.205 2704-2735/com.example.testsenla W/Gralloc3: mapper 3.x is not supported
+2021-05-31 19:08:43.211 2704-2735/com.example.testsenla E/eglCodecCommon: goldfish_dma_create_region: could not obtain fd to device! fd -1 errno=2
