@@ -1,14 +1,4 @@
-public class Task1 {
-    public static void main(String[] args) {
-        int[] list1 = new int[] { 2, 3, 5, 7, 11 };
-        int[] list2 = new int[] { 2, 4, 6, 8, 10, 12, 14 };
-        int[] result = merge(list1, list2);
-
-        for (int val : result) {
-            System.out.print(val+" ");
-        }
-    }
-
+public class Lesson03 {
 
     public static int[] merge(int[] arrayFirst, int[] arraySecond){
         int[]sortedArray = new int[arrayFirst.length+arraySecond.length];
