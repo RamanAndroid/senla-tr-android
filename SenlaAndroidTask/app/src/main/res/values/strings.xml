@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">SenlaAndroidTask</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="password">Password</string>
+    <string name="input_login">Введите логин!</string>
+    <string name="input_password">Введите пароль!</string>
+    <string name="successfully_registered">Вы успешно зарегестрировались!</string>
+    <string name="successfully_logged_in">Вы успешно авторизировались!</string>
+    <string name="wrong_login_or_passwords">Логин или пароль были указаны не правильно!</string>
+
+</resources>
