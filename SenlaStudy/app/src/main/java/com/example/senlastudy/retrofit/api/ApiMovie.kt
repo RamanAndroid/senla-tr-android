@@ -22,7 +22,7 @@ interface ApiMovie {
     ): Observable<MovieListResponse>
 
     @GET("movie/upcoming")
-    fun getUpComingMovie(
+    fun getUpcomingMovie(
         @Query("language") language: String,
         @Query("page") page: Int
     ): Observable<MovieUpcomingListResponse>
@@ -34,5 +34,3 @@ interface ApiMovie {
     ): Observable<MovieUpcomingListResponse>
 }
 
-//ViewPager1 сделать
-//Реализовать всё с помощью фрагментов

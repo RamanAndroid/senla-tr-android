@@ -2,7 +2,6 @@ package com.example.senlastudy.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -12,10 +11,10 @@ import com.example.senlastudy.retrofit.pojo.Movie
 
 class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
-    var movie = emptyList<Movie>()
+    private var movie = emptyList<Movie>()
 
 
-    inner class MovieViewHolder(private val binding: RowMovieBinding) :
+    class MovieViewHolder(private val binding: RowMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(movie: Movie) {
@@ -27,7 +26,7 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
                     )
                     .into(logoMovie)
 
-                titleMovie.text = movie.original_title
+                titleMovie.text = movie.title
 
             }
         }
@@ -47,9 +46,9 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
     override fun getItemCount(): Int = movie.size
 
-    fun setData(movie:List<Movie>){
+    fun setData(movie: List<Movie>) {
 
-        this.movie=movie
+        this.movie += movie
     }
 
 }
