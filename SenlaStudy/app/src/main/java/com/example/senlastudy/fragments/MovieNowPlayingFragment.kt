@@ -22,7 +22,7 @@ class MovieNowPlayingFragment : Fragment(), MainContract.IMovieNowPlayingView {
     private val adapter: MovieAdapter by lazy { MovieAdapter() }
     private var _binding: FragmentMovieNowPlayingBinding? = null
     private val binding get() = _binding!!
-    var page = 1
+    private var page = 1
 
 
     override fun onCreateView(

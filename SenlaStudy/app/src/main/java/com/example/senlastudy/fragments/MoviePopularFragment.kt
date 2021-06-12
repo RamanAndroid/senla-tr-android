@@ -21,7 +21,7 @@ class MoviePopularFragment : Fragment(), MainContract.IMoviePopularView {
     private val adapter: MovieAdapter by lazy { MovieAdapter() }
     private var _binding: FragmentMoviePopularBinding? = null
     private val binding get() = _binding!!
-    var page = 1
+    private var page = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
