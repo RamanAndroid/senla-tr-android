@@ -16,7 +16,7 @@ public class Main {
         //lesson-04
         //Task 1.2
         System.out.println("Lesson-04");
-        System.out.println(Lesson04.sumRandomNumbers(573,192,467));
+        System.out.println(Lesson04.sumRandomNumbers(573, 192, 467));
 
 
         ArrayList<String> movies = new ArrayList<String>();
