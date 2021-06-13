@@ -10,7 +10,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 class MovieNowPlayingPresenter(private val iMovieNowPlayingView: MainContract.IMovieView) :
     IMoviePresenter {
 
-    private lateinit var disposables: CompositeDisposable
+    private val disposables: CompositeDisposable = CompositeDisposable()
 
     override fun downloadingMovieList(language: String, page: Int) {
 
