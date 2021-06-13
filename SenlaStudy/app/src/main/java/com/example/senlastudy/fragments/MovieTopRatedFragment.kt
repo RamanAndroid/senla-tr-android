@@ -1,5 +1,6 @@
 package com.example.senlastudy.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,11 +10,13 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.senlastudy.DetailMovieActivity
 import com.example.senlastudy.MovieApplication
 import com.example.senlastudy.adapter.MovieAdapter
 import com.example.senlastudy.databinding.FragmentMovieTopRatedBinding
 import com.example.senlastudy.presenter.rated.MovieTopRatedPresenter
 import com.example.senlastudy.retrofit.pojo.Movie
+import com.example.senlastudy.utils.Constants
 import com.example.senlastudy.view.MainContract
 
 
@@ -82,7 +85,9 @@ class MovieTopRatedFragment : Fragment(), MainContract.IMovieView, MovieAdapter.
     }
 
     override fun onMovieClick(movie: Movie) {
-        Toast.makeText(requireContext(), movie.title, Toast.LENGTH_SHORT).show()
+        val intent = Intent(requireContext(), DetailMovieActivity::class.java)
+        intent.putExtra(Constants.MOVIE_EXTRA, movie)
+        startActivity(intent)
     }
 
 

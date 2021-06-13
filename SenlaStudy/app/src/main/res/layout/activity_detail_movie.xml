@@ -15,7 +15,6 @@
             android:id="@+id/movie_detail_image"
             android:layout_width="0dp"
             android:layout_height="250dp"
-            android:src="@{item.backdrop_path}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -65,7 +64,6 @@
             android:gravity="end"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
-            android:text="@{item.first_air_date}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/movie_detail_first_air_date_description"
             app:layout_constraintTop_toBottomOf="@+id/movie_detail_name" />
@@ -101,7 +99,6 @@
             android:gravity="end"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
-            android:text="@{item.original_language}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/movie_detail_original_language_description"
             app:layout_constraintTop_toBottomOf="@id/movie_detail_delimiter_last_air_date" />
@@ -137,7 +134,6 @@
             android:gravity="end"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
-            android:text="@{item.original_name}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/movie_detail_original_name_description"
             app:layout_constraintTop_toBottomOf="@id/movie_detail_delimiter_original_language" />
