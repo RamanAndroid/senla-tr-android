@@ -5,6 +5,7 @@ import com.example.senlastudy.retrofit.pojo.MovieUpcomingListResponse
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiMovie {
@@ -31,6 +32,12 @@ interface ApiMovie {
     fun getNowPlayingMovie(
         @Query("language") language: String,
         @Query("page") page: Int
+    ): Observable<MovieUpcomingListResponse>
+
+    @GET("movie/{movie_id}")
+    fun getMovie(
+        @Path("movie_id")
+        @Query("language") language: String
     ): Observable<MovieUpcomingListResponse>
 }
 

@@ -16,7 +16,7 @@ import com.example.senlastudy.retrofit.pojo.Movie
 import com.example.senlastudy.view.MainContract
 
 
-class MovieNowPlayingFragment : Fragment(), MainContract.IMovieNowPlayingView {
+class MovieNowPlayingFragment : Fragment(), MainContract.IMovieView {
 
     val movieNowPlayingPresenter: MovieNowPlayingPresenter by lazy { MovieNowPlayingPresenter(this) }
     private val adapter: MovieAdapter by lazy { MovieAdapter() }
@@ -32,7 +32,7 @@ class MovieNowPlayingFragment : Fragment(), MainContract.IMovieNowPlayingView {
         _binding = FragmentMovieNowPlayingBinding.inflate(inflater, container, false)
 
         setupRecyclerView()
-        movieNowPlayingPresenter.downloadingMovieNowPlayingList(
+        movieNowPlayingPresenter.downloadingMovieList(
             MovieApplication.localLanguage,
             page
         )
@@ -53,7 +53,7 @@ class MovieNowPlayingFragment : Fragment(), MainContract.IMovieNowPlayingView {
                     super.onScrollStateChanged(recyclerView, newState)
                     if (!recyclerView.canScrollVertically(1)) {
                         page++
-                        movieNowPlayingPresenter.downloadingMovieNowPlayingList(
+                        movieNowPlayingPresenter.downloadingMovieList(
                             MovieApplication.localLanguage,
                             page
                         )
@@ -67,6 +67,7 @@ class MovieNowPlayingFragment : Fragment(), MainContract.IMovieNowPlayingView {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        movieNowPlayingPresenter.detach()
     }
 
     override fun setData(movie: List<Movie>) {

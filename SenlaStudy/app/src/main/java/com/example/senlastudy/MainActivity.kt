@@ -35,5 +35,9 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+
+    //Детальный просмотр фильма
+    //16 и 17
+
 }
 

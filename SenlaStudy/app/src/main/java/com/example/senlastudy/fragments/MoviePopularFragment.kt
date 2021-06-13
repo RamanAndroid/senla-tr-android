@@ -15,7 +15,7 @@ import com.example.senlastudy.presenter.popular.MoviePopularPresenter
 import com.example.senlastudy.retrofit.pojo.Movie
 import com.example.senlastudy.view.MainContract
 
-class MoviePopularFragment : Fragment(), MainContract.IMoviePopularView {
+class MoviePopularFragment : Fragment(), MainContract.IMovieView{
 
     val moviePopularPresenter: MoviePopularPresenter by lazy { MoviePopularPresenter(this)  }
     private val adapter: MovieAdapter by lazy { MovieAdapter() }
@@ -31,7 +31,7 @@ class MoviePopularFragment : Fragment(), MainContract.IMoviePopularView {
 
 
         setupRecyclerView()
-        moviePopularPresenter.downloadingMoviePopularList(
+        moviePopularPresenter.downloadingMovieList(
             MovieApplication.localLanguage,
             page
         )
@@ -50,7 +50,7 @@ class MoviePopularFragment : Fragment(), MainContract.IMoviePopularView {
                     super.onScrollStateChanged(recyclerView, newState)
                     if (!recyclerView.canScrollVertically(1)) {
                         page++
-                        moviePopularPresenter.downloadingMoviePopularList(
+                        moviePopularPresenter.downloadingMovieList(
                             MovieApplication.localLanguage,
                             page
                         )
@@ -64,6 +64,7 @@ class MoviePopularFragment : Fragment(), MainContract.IMoviePopularView {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        moviePopularPresenter.detach()
     }
 
     override fun setData(movie: List<Movie>) {

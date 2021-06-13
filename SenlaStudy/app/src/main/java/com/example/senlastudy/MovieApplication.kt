@@ -16,9 +16,16 @@ class MovieApplication : Application() {
 
     companion object {
         lateinit var apiService: ApiMovie
+            private set
+
         lateinit var okHttpClient: OkHttpClient
+            private set
+
         lateinit var gsonConverter: GsonConverterFactory
-        lateinit var localLanguage:String
+            private set
+
+        lateinit var localLanguage: String
+            private set
     }
 
     override fun onCreate() {
@@ -73,7 +80,7 @@ class MovieApplication : Application() {
             )
     }
 
-    private fun getDefaultLanguage(){
-       localLanguage = Locale.getDefault().language
+    private fun getDefaultLanguage() {
+        localLanguage = Locale.getDefault().language
     }
 }
