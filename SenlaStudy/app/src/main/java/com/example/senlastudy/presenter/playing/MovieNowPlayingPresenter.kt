@@ -26,6 +26,8 @@ class MovieNowPlayingPresenter(private val iMovieNowPlayingView: MainContract.IM
     }
 
 
+
+
     override fun detach() {
         disposables.dispose()
     }

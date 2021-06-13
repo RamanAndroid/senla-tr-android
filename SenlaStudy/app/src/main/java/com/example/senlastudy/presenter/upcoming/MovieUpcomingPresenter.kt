@@ -25,6 +25,7 @@ class MovieUpcomingPresenter(private val iMovieUpcomingView: MainContract.IMovie
     }
 
 
+
     override fun detach() {
         disposables.dispose()
     }

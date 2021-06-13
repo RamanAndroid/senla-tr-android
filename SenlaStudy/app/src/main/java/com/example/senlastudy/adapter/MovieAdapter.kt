@@ -9,13 +9,23 @@ import com.example.senlastudy.R
 import com.example.senlastudy.databinding.RowMovieBinding
 import com.example.senlastudy.retrofit.pojo.Movie
 
-class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
+class MovieAdapter(private val listener: OnMovieClickListener): RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
     private var movie = emptyList<Movie>()
 
 
-    class MovieViewHolder(private val binding: RowMovieBinding) :
+    inner class MovieViewHolder(private val binding: RowMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.logoMovie.setOnClickListener {
+
+                if (position != RecyclerView.NO_POSITION) {
+                    val item = movie[position]
+                    listener.onMovieClick(item)
+                }
+            }
+        }
 
         fun bind(movie: Movie) {
             binding.apply {
@@ -49,6 +59,10 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
     fun setData(movie: List<Movie>) {
 
         this.movie += movie
+    }
+
+    interface OnMovieClickListener {
+        fun onMovieClick(movie: Movie)
     }
 
 }

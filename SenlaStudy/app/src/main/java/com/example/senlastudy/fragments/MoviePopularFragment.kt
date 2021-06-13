@@ -15,10 +15,11 @@ import com.example.senlastudy.presenter.popular.MoviePopularPresenter
 import com.example.senlastudy.retrofit.pojo.Movie
 import com.example.senlastudy.view.MainContract
 
-class MoviePopularFragment : Fragment(), MainContract.IMovieView{
+class MoviePopularFragment : Fragment(), MainContract.IMovieView,
+    MovieAdapter.OnMovieClickListener {
 
-    val moviePopularPresenter: MoviePopularPresenter by lazy { MoviePopularPresenter(this)  }
-    private val adapter: MovieAdapter by lazy { MovieAdapter() }
+    val moviePopularPresenter: MoviePopularPresenter by lazy { MoviePopularPresenter(this) }
+    private val adapter: MovieAdapter by lazy { MovieAdapter(this) }
     private var _binding: FragmentMoviePopularBinding? = null
     private val binding get() = _binding!!
     private var page = 1
@@ -77,6 +78,10 @@ class MoviePopularFragment : Fragment(), MainContract.IMovieView{
     override fun errorResponse(error: Throwable) {
         binding.noMovie.isVisible = true
         binding.rvMovieList.isVisible = false
+    }
+
+    override fun onMovieClick(movie: Movie) {
+        TODO("Not yet implemented")
     }
 
 

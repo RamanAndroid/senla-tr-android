@@ -24,6 +24,8 @@ class MoviePopularPresenter(private val iMoviePopularView: MainContract.IMovieVi
     }
 
 
+
+
     override fun detach() {
 
         disposables.dispose()

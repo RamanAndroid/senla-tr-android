@@ -28,6 +28,8 @@ class MovieTopRatedPresenter(private val iMovieTopRatedView: MainContract.IMovie
     }
 
 
+
+
     override fun detach() {
         disposables.dispose()
     }

@@ -16,10 +16,10 @@ import com.example.senlastudy.retrofit.pojo.Movie
 import com.example.senlastudy.view.MainContract
 
 
-class MovieTopRatedFragment : Fragment(), MainContract.IMovieView {
+class MovieTopRatedFragment : Fragment(), MainContract.IMovieView, MovieAdapter.OnMovieClickListener {
 
     val movieTopRatedPresenter: MovieTopRatedPresenter by lazy { MovieTopRatedPresenter(this) }
-    private val adapter: MovieAdapter by lazy { MovieAdapter() }
+    private val adapter: MovieAdapter by lazy { MovieAdapter(this) }
     private var _binding: FragmentMovieTopRatedBinding? = null
     private val binding get() = _binding!!
     private var page = 1
@@ -78,6 +78,10 @@ class MovieTopRatedFragment : Fragment(), MainContract.IMovieView {
     override fun errorResponse(error: Throwable) {
         binding.noMovie.isVisible = true
         binding.rvMovieList.isVisible = false
+    }
+
+    override fun onMovieClick(movie: Movie) {
+        TODO("Not yet implemented")
     }
 
 
