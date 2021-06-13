@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -81,7 +82,7 @@ class MovieTopRatedFragment : Fragment(), MainContract.IMovieView, MovieAdapter.
     }
 
     override fun onMovieClick(movie: Movie) {
-        TODO("Not yet implemented")
+        Toast.makeText(requireContext(), movie.title, Toast.LENGTH_SHORT).show()
     }
 
 

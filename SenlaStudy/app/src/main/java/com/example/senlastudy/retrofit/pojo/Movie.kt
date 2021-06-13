@@ -1,8 +1,11 @@
 package com.example.senlastudy.retrofit.pojo
 
+import android.os.Parcelable
 import com.example.senlastudy.utils.Constants
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Movie(
 
     @SerializedName("adult")
@@ -33,6 +36,6 @@ data class Movie(
     val voteAverage: Double,
     @SerializedName("vote_count")
     val voteCount: Int
-){
-    val image get() = Constants.BASE_IMAGE_URL+backdropPath
+) : Parcelable {
+    val image get() = Constants.BASE_IMAGE_URL + backdropPath
 }

@@ -20,8 +20,8 @@ class MovieAdapter(private val listener: OnMovieClickListener): RecyclerView.Ada
         init {
             binding.logoMovie.setOnClickListener {
 
-                if (position != RecyclerView.NO_POSITION) {
-                    val item = movie[position]
+                if (adapterPosition != RecyclerView.NO_POSITION) {
+                    val item = movie[adapterPosition]
                     listener.onMovieClick(item)
                 }
             }
