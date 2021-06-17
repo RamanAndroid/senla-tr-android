@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">RegexLessonSixteen</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="navigation_drawer_open">Закрыт</string>
+    <string name="navigation_drawer_close">Открыт</string>
+
+
+    <string name="preference_replace_minus">Замена символа минус</string>
+    <string name="preference_replace_format_phone_numbers">Замента формата номера телефона</string>
+    <string name="preference_replace_word_upper_case">Заменять слово на верхний регистр</string>
+    <string name="preference_find_word_in_tag">Найти слова в тегах</string>
+    <string name="preference_find_links">Найти ссылки</string>
 </resources>

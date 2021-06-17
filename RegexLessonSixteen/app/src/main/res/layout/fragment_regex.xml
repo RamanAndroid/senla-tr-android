@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegexFragment">
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/input_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_margin_medium"
+        android:layout_marginTop="@dimen/padding_margin_large"
+        android:layout_marginEnd="@dimen/padding_margin_medium"
+        android:hint="Введите текст"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/conversion_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_margin_medium"
+        android:layout_marginTop="@dimen/padding_margin_large"
+        android:layout_marginEnd="@dimen/padding_margin_medium"
+        android:text="Преобразовать текст"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_text" />
+
+    <TextView
+        android:id="@+id/replace_minus"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_margin_medium"
+        android:layout_marginTop="@dimen/padding_margin_large"
+        android:layout_marginEnd="@dimen/padding_margin_medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/conversion_btn" />
+
+    <TextView
+        android:id="@+id/replace_format_phone_numbers"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_margin_medium"
+        android:layout_marginTop="@dimen/padding_margin_large"
+        android:layout_marginEnd="@dimen/padding_margin_medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/replace_minus" />
+
+    <TextView
+        android:id="@+id/replace_word_in_upper_case"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_margin_medium"
+        android:layout_marginTop="@dimen/padding_margin_large"
+        android:layout_marginEnd="@dimen/padding_margin_medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/replace_format_phone_numbers" />
+
+    <TextView
+        android:id="@+id/find_word_in_tag"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_margin_medium"
+        android:layout_marginTop="@dimen/padding_margin_large"
+        android:layout_marginEnd="@dimen/padding_margin_medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/replace_word_in_upper_case" />
+
+    <TextView
+        android:id="@+id/find_links"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_margin_medium"
+        android:layout_marginTop="@dimen/padding_margin_large"
+        android:layout_marginEnd="@dimen/padding_margin_medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/find_word_in_tag" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
