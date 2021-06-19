@@ -32,6 +32,8 @@ public class Main {
         System.out.println(Lesson04.bindingString(movies));
         //Task 2.3
         Lesson04.sortByWordRepeat(movies);
+
+
     }
 
 }

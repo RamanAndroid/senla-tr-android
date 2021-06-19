@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.threadseventeenlesson.databinding.ActivityMainBinding
 
@@ -46,7 +47,8 @@ class MainActivity : AppCompatActivity() {
 
                 }
                 handler.post {
-                    binding.threadOne.text = text.toString()
+                    Log.d("TEXT", text.toString())
+                    binding.threadOne.append(text.toString())
                 }
             }
         }
@@ -61,11 +63,8 @@ class MainActivity : AppCompatActivity() {
                     calculate(i.toDouble())
                 }
                 for (i in numbersBuffer) {
-                    synchronized(lock) {
-                        Log.d("THREAD-2", i.toString())
-                        text.append("$i\n")
-                    }
-
+                    Log.d("THREAD-2", i.toString())
+                    text.append("$i\n")
                 }
             }
         }
@@ -77,6 +76,8 @@ class MainActivity : AppCompatActivity() {
                     lock.wait()
                     if (isWork) {
                         Log.d("THREAD-4", "YUP!")
+                        text.append("YUP!\n")
+
                     }
                 }
             }
@@ -102,7 +103,7 @@ class MainActivity : AppCompatActivity() {
 
                 handler.post {
                     if (killThread == 10) {
-                        binding.start.isEnabled = false
+                        binding.start.isEnabled = true
                         Log.d("THREAD-3", "УБИВАЕМ ПОТОКИ")
                     }
 
@@ -118,6 +119,7 @@ class MainActivity : AppCompatActivity() {
 
 
         binding.start.setOnClickListener {
+            binding.start.isEnabled = false
             startThread()
         }
 
