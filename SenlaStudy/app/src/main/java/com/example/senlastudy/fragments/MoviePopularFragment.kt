@@ -86,7 +86,7 @@ class MoviePopularFragment : Fragment(), MainContract.IMovieView,
 
     override fun onMovieClick(movie: Movie) {
         val intent = Intent(requireContext(), DetailMovieActivity::class.java)
-        intent.putExtra(Constants.MOVIE_EXTRA, movie)
+        intent.putExtra(DetailMovieActivity.MOVIE_EXTRA, movie)
         startActivity(intent)
     }
 

@@ -34,6 +34,7 @@ class MovieNowPlayingFragment : Fragment(), MainContract.IMovieView, MovieAdapte
     ): View? {
         _binding = FragmentMovieNowPlayingBinding.inflate(inflater, container, false)
 
+
         setupRecyclerView()
         movieNowPlayingPresenter.downloadingMovieList(
             MovieApplication.localLanguage,
@@ -87,7 +88,7 @@ class MovieNowPlayingFragment : Fragment(), MainContract.IMovieView, MovieAdapte
 
     override fun onMovieClick(movie: Movie) {
         val intent = Intent(requireContext(), DetailMovieActivity::class.java)
-        intent.putExtra(Constants.MOVIE_EXTRA, movie)
+        intent.putExtra(DetailMovieActivity.MOVIE_EXTRA, movie)
         startActivity(intent)
     }
 

@@ -1,6 +1,16 @@
 package com.example.senlastudy.presenter
 
+import com.example.senlastudy.retrofit.pojo.Movie
+import com.example.senlastudy.view.MainContract
+
 interface IMoviePresenter {
-    fun downloadingMovieList(language: String, page: Int)
-    fun detach()
+
+    interface View
+
+    interface Presenter<View : MainContract.IMovieView> {
+
+        fun attachView(view: View)
+        fun detach()
+    }
+
 }

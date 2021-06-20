@@ -20,8 +20,8 @@ class DetailMovieActivity : AppCompatActivity() {
         unpackingMovie()
     }
 
-    fun unpackingMovie() {
-        val movie: Movie = intent.getParcelableExtra<Parcelable>(Constants.MOVIE_EXTRA) as Movie
+    private fun unpackingMovie() {
+        val movie: Movie = intent.getParcelableExtra<Parcelable>(MOVIE_EXTRA) as Movie
 
         binding.apply {
             Glide.with(this@DetailMovieActivity).load(movie.image).centerCrop()
@@ -38,5 +38,10 @@ class DetailMovieActivity : AppCompatActivity() {
 
         }
 
+    }
+
+
+    companion object {
+        const val MOVIE_EXTRA = "MOVIE_EXTRA"
     }
 }
