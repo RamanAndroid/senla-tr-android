@@ -4,10 +4,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.senlastudy.adapter.MovieFragmentPagerAdapter
 import com.example.senlastudy.databinding.ActivityMainBinding
-import com.example.senlastudy.fragments.MovieNowPlayingFragment
-import com.example.senlastudy.fragments.MoviePopularFragment
-import com.example.senlastudy.fragments.MovieTopRatedFragment
-import com.example.senlastudy.fragments.MovieUpcomingFragment
+import com.example.senlastudy.fragments.movie.MovieNowPlayingFragment
+import com.example.senlastudy.fragments.movie.MoviePopularFragment
+import com.example.senlastudy.fragments.movie.MovieTopRatedFragment
+import com.example.senlastudy.fragments.movie.MovieUpcomingFragment
 
 
 class MainActivity : AppCompatActivity() {

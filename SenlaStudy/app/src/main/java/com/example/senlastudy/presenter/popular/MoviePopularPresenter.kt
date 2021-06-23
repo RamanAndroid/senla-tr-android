@@ -9,34 +9,21 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-class MoviePopularPresenter(private val iMoviePopularView: MainContract.IMovieView) :
+class MoviePopularPresenter :
     MoviePresenter<MainContract.IMovieView>(), IMoviePresenter {
 
-    private var disposables: CompositeDisposable? = null
-
     fun downloadingMovieList(language: String, page: Int) {
-
-        disposables?.add(
+        getCompositeDisposable().add(
             apiService.getPopularMovie(language, page)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(
                     { response ->
-                        iMoviePopularView.setData(response.results)
+                        getView().setData(response.results)
                     },
-                    { t -> iMoviePopularView.errorResponse(t) })
+                    { t -> getView().errorResponse(t) })
         )
 
-    }
-
-    override fun attachView(view: MainContract.IMovieView) {
-        super.attachView(view)
-        disposables = CompositeDisposable()
-    }
-
-    override fun detach() {
-        super.detach()
-        disposables = null
     }
 
 

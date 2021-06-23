@@ -4,7 +4,7 @@ import com.example.senlastudy.retrofit.pojo.Movie
 
 interface MainContract {
 
-    interface IMovieView {
+    interface IMovieView{
         fun setData(movie: List<Movie>)
         fun errorResponse(error: Throwable)
     }

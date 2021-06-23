@@ -1,11 +1,10 @@
-package com.example.senlastudy.fragments
+package com.example.senlastudy.fragments.movie
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,35 +12,37 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.senlastudy.DetailMovieActivity
 import com.example.senlastudy.MovieApplication
 import com.example.senlastudy.adapter.MovieAdapter
-import com.example.senlastudy.databinding.FragmentMoviePopularBinding
-import com.example.senlastudy.presenter.popular.MoviePopularPresenter
+import com.example.senlastudy.databinding.FragmentMovieNowPlayingBinding
+import com.example.senlastudy.presenter.playing.MovieNowPlayingPresenter
 import com.example.senlastudy.retrofit.pojo.Movie
-import com.example.senlastudy.utils.Constants
 import com.example.senlastudy.view.MainContract
 
-class MoviePopularFragment : Fragment(), MainContract.IMovieView,
-    MovieAdapter.OnMovieClickListener {
 
-    val moviePopularPresenter: MoviePopularPresenter by lazy { MoviePopularPresenter(this) }
+class MovieNowPlayingFragment : Fragment(), MainContract.IMovieView, MovieAdapter.OnMovieClickListener {
+
+    val movieNowPlayingPresenter: MovieNowPlayingPresenter by lazy { MovieNowPlayingPresenter(this) }
     private val adapter: MovieAdapter by lazy { MovieAdapter(this) }
-    private var _binding: FragmentMoviePopularBinding? = null
+    private var _binding: FragmentMovieNowPlayingBinding? = null
     private val binding get() = _binding!!
     private var page = 1
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentMoviePopularBinding.inflate(inflater, container, false)
+        _binding = FragmentMovieNowPlayingBinding.inflate(inflater, container, false)
 
 
         setupRecyclerView()
-        moviePopularPresenter.downloadingMovieList(
+        movieNowPlayingPresenter.downloadingMovieList(
             MovieApplication.localLanguage,
             page
         )
 
+
         return binding.root
+
     }
 
     private fun setupRecyclerView() {
@@ -55,7 +56,7 @@ class MoviePopularFragment : Fragment(), MainContract.IMovieView,
                     super.onScrollStateChanged(recyclerView, newState)
                     if (!recyclerView.canScrollVertically(1)) {
                         page++
-                        moviePopularPresenter.downloadingMovieList(
+                        movieNowPlayingPresenter.downloadingMovieList(
                             MovieApplication.localLanguage,
                             page
                         )
@@ -69,7 +70,7 @@ class MoviePopularFragment : Fragment(), MainContract.IMovieView,
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        moviePopularPresenter.detach()
+        movieNowPlayingPresenter.detach()
     }
 
     override fun setData(movie: List<Movie>) {

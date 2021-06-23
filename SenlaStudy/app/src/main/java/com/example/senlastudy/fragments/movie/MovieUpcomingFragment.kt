@@ -1,4 +1,4 @@
-package com.example.senlastudy.fragments
+package com.example.senlastudy.fragments.movie
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,38 +12,41 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.senlastudy.DetailMovieActivity
 import com.example.senlastudy.MovieApplication
 import com.example.senlastudy.adapter.MovieAdapter
-import com.example.senlastudy.databinding.FragmentMovieNowPlayingBinding
-import com.example.senlastudy.presenter.playing.MovieNowPlayingPresenter
+import com.example.senlastudy.databinding.FragmentMovieUpComingBinding
+import com.example.senlastudy.presenter.upcoming.MovieUpcomingPresenter
 import com.example.senlastudy.retrofit.pojo.Movie
-import com.example.senlastudy.utils.Constants
 import com.example.senlastudy.view.MainContract
 
 
-class MovieNowPlayingFragment : Fragment(), MainContract.IMovieView, MovieAdapter.OnMovieClickListener {
+class MovieUpcomingFragment : Fragment(), MainContract.IMovieView,
+    MovieAdapter.OnMovieClickListener {
 
-    val movieNowPlayingPresenter: MovieNowPlayingPresenter by lazy { MovieNowPlayingPresenter(this) }
+    val movieUpcomingPresenter: MovieUpcomingPresenter by lazy { MovieUpcomingPresenter(this) }
     private val adapter: MovieAdapter by lazy { MovieAdapter(this) }
-    private var _binding: FragmentMovieNowPlayingBinding? = null
+    private var _binding: FragmentMovieUpComingBinding? = null
     private val binding get() = _binding!!
     private var page = 1
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentMovieNowPlayingBinding.inflate(inflater, container, false)
-
+        _binding = FragmentMovieUpComingBinding.inflate(inflater, container, false)
 
         setupRecyclerView()
-        movieNowPlayingPresenter.downloadingMovieList(
+        movieUpcomingPresenter.downloadingMovieList(
             MovieApplication.localLanguage,
             page
         )
 
 
         return binding.root
+    }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        movieUpcomingPresenter.detach()
     }
 
     private fun setupRecyclerView() {
@@ -57,7 +60,7 @@ class MovieNowPlayingFragment : Fragment(), MainContract.IMovieView, MovieAdapte
                     super.onScrollStateChanged(recyclerView, newState)
                     if (!recyclerView.canScrollVertically(1)) {
                         page++
-                        movieNowPlayingPresenter.downloadingMovieList(
+                        movieUpcomingPresenter.downloadingMovieList(
                             MovieApplication.localLanguage,
                             page
                         )
@@ -66,12 +69,6 @@ class MovieNowPlayingFragment : Fragment(), MainContract.IMovieView, MovieAdapte
 
             })
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-        movieNowPlayingPresenter.detach()
     }
 
     override fun setData(movie: List<Movie>) {

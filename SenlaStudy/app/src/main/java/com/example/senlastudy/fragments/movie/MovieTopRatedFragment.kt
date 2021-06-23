@@ -1,11 +1,10 @@
-package com.example.senlastudy.fragments
+package com.example.senlastudy.fragments.movie
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,7 +15,6 @@ import com.example.senlastudy.adapter.MovieAdapter
 import com.example.senlastudy.databinding.FragmentMovieTopRatedBinding
 import com.example.senlastudy.presenter.rated.MovieTopRatedPresenter
 import com.example.senlastudy.retrofit.pojo.Movie
-import com.example.senlastudy.utils.Constants
 import com.example.senlastudy.view.MainContract
 
 
