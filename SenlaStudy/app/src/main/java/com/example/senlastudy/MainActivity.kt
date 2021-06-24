@@ -21,9 +21,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-        adapter.addFragment(MovieNowPlayingFragment(),"Now playing")
         adapter.addFragment(MoviePopularFragment(),"Popular")
+        adapter.addFragment(MovieNowPlayingFragment(),"Now playing")
         adapter.addFragment(MovieTopRatedFragment(),"Top rated")
         adapter.addFragment(MovieUpcomingFragment(),"Upcoming")
 

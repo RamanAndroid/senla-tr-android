@@ -12,30 +12,21 @@ import com.example.senlastudy.presenter.popular.MoviePopularPresenter
 class MoviePopularFragment : BaseMovieFragment() {
 
     lateinit var moviePopularPresenter: MoviePopularPresenter
-    private var _binding: FragmentMoviePopularBinding? = null
-    private val binding get() = _binding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentMoviePopularBinding.inflate(inflater, container, false)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         createPresenter(MoviePopularPresenter() as IMoviePresenter)
         moviePopularPresenter = getPresenter() as MoviePopularPresenter
         moviePopularPresenter.attachView(this)
         initializationAttributes()
         getMovie()
-
-        return binding.root
     }
 
 
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
         deletePresenter()
         moviePopularPresenter.detach()
     }
