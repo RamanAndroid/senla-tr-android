@@ -49,7 +49,7 @@ class MoviePopularFragment : BaseMovieFragment<IMoviePresenter>(), MainContract.
         return binding.root
     }
 
-    private fun setupRecyclerView() {
+    override fun setupRecyclerView() {
         binding.apply {
             rvMovieList.adapter = adapter
             rvMovieList.setHasFixedSize(true)
@@ -74,6 +74,7 @@ class MoviePopularFragment : BaseMovieFragment<IMoviePresenter>(), MainContract.
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        deletePresenter()
         moviePopularPresenter.detach()
     }
 
