@@ -35,10 +35,13 @@ class MovieNowPlayingFragment : Fragment(), MainContract.IMovieView, MovieAdapte
 
 
         setupRecyclerView()
+        /*
         movieNowPlayingPresenter.downloadingMovieList(
             MovieApplication.localLanguage,
             page
         )
+
+         */
 
 
         return binding.root
