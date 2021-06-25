@@ -15,7 +15,6 @@ import com.example.senlastudy.adapter.MovieAdapter
 import com.example.senlastudy.databinding.FragmentMovieTopRatedBinding
 import com.example.senlastudy.presenter.rated.MovieTopRatedPresenter
 import com.example.senlastudy.retrofit.pojo.Movie
-import com.example.senlastudy.view.MainContract
 
 
 class MovieTopRatedFragment : Fragment(), MainContract.IMovieView, MovieAdapter.OnMovieClickListener {

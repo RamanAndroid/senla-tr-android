@@ -15,7 +15,6 @@ import com.example.senlastudy.adapter.MovieAdapter
 import com.example.senlastudy.databinding.FragmentMovieUpComingBinding
 import com.example.senlastudy.presenter.upcoming.MovieUpcomingPresenter
 import com.example.senlastudy.retrofit.pojo.Movie
-import com.example.senlastudy.view.MainContract
 
 
 class MovieUpcomingFragment : Fragment(), MainContract.IMovieView,

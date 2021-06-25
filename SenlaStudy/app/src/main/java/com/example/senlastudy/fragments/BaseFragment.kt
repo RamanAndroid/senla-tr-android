@@ -1,17 +1,17 @@
 package com.example.senlastudy.fragments
 
 import androidx.fragment.app.Fragment
-import com.example.senlastudy.presenter.IMoviePresenter
+import com.example.senlastudy.presenter.MainContract
 
-abstract class BaseFragment<Presenter: IMoviePresenter>:Fragment() {
+abstract class BaseFragment<Presenter: MainContract.Presenter<MainContract.View>>:Fragment() {
 
     private var presenter: Presenter? = null
 
-    fun createPresenter(presenter: Presenter) {
+    protected fun createPresenter(presenter: Presenter) {
         this.presenter = presenter
     }
 
-    fun deletePresenter(){
+    protected fun deletePresenter(){
         this.presenter = null
     }
 

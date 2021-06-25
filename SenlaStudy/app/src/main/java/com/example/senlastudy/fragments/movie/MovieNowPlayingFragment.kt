@@ -13,12 +13,12 @@ import com.example.senlastudy.DetailMovieActivity
 import com.example.senlastudy.MovieApplication
 import com.example.senlastudy.adapter.MovieAdapter
 import com.example.senlastudy.databinding.FragmentMovieNowPlayingBinding
+import com.example.senlastudy.presenter.MainContract
 import com.example.senlastudy.presenter.playing.MovieNowPlayingPresenter
 import com.example.senlastudy.retrofit.pojo.Movie
-import com.example.senlastudy.view.MainContract
 
 
-class MovieNowPlayingFragment : Fragment(), MainContract.IMovieView, MovieAdapter.OnMovieClickListener {
+class MovieNowPlayingFragment : Fragment(), MainContract.PresenterMovieList, MovieAdapter.OnMovieClickListener {
 
     val movieNowPlayingPresenter: MovieNowPlayingPresenter by lazy { MovieNowPlayingPresenter(this) }
     private val adapter: MovieAdapter by lazy { MovieAdapter(this) }

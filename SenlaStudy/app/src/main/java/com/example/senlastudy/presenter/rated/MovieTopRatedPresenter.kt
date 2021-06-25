@@ -1,15 +1,14 @@
 package com.example.senlastudy.presenter.rated
 
 import com.example.senlastudy.MovieApplication
-import com.example.senlastudy.presenter.IMoviePresenter
+import com.example.senlastudy.presenter.MainContract
 import com.example.senlastudy.presenter.MoviePresenter
-import com.example.senlastudy.view.MainContract
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 
-class MovieTopRatedPresenter(private val iMovieTopRatedView: MainContract.IMovieView) :   MoviePresenter<MainContract.IMovieView>(), IMoviePresenter {
+class MovieTopRatedPresenter(private val iMovieTopRatedView: MainContract.IMovieView) :   MoviePresenter<MainContract.IMovieView>(), MainContract {
 
     private val disposables: CompositeDisposable = CompositeDisposable()
 

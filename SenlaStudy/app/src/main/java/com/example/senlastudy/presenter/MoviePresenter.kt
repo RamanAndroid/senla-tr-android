@@ -1,12 +1,10 @@
 package com.example.senlastudy.presenter
 
-import com.example.senlastudy.view.MainContract
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 
-abstract class MoviePresenter<View : MainContract.IMovieView> : IMoviePresenter.Presenter<View> {
+abstract class MoviePresenter<View : MainContract.View> : MainContract.Presenter<View> {
     private var view: View? = null
     private var disposable: CompositeDisposable? = null
-
 
     override fun attachView(view: View) {
         this.disposable = CompositeDisposable()

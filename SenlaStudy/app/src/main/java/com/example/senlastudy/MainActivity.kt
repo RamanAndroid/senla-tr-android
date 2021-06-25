@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.senlastudy.adapter.MovieFragmentPagerAdapter
 import com.example.senlastudy.databinding.ActivityMainBinding
 import com.example.senlastudy.fragments.movie.MovieNowPlayingFragment
-import com.example.senlastudy.fragments.movie.MoviePopularFragment
+import com.example.senlastudy.fragments.movie.MoviePopularListFragment
 import com.example.senlastudy.fragments.movie.MovieTopRatedFragment
 import com.example.senlastudy.fragments.movie.MovieUpcomingFragment
 
@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        adapter.addFragment(MoviePopularFragment(),"Popular")
+        adapter.addFragment(MoviePopularListFragment(),"Popular")
         adapter.addFragment(MovieNowPlayingFragment(),"Now playing")
         adapter.addFragment(MovieTopRatedFragment(),"Top rated")
         adapter.addFragment(MovieUpcomingFragment(),"Upcoming")
