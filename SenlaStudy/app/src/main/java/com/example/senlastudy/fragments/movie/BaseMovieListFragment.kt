@@ -12,11 +12,14 @@ import com.example.senlastudy.DetailMovieActivity
 import com.example.senlastudy.adapter.MovieAdapter
 import com.example.senlastudy.databinding.FragmentMoviePopularBinding
 import com.example.senlastudy.fragments.BaseFragment
-import com.example.senlastudy.presenter.MainContract
+import com.example.senlastudy.presenter.MovieListContract
 import com.example.senlastudy.retrofit.pojo.Movie
 
-abstract class BaseMovieListFragment : BaseFragment<MainContract.Presenter<MainContract.View>>(), MainContract.ViewMovieList,
+abstract class BaseMovieListFragment :
+    BaseFragment<MovieListContract.PresenterMovieList, MovieListContract.ViewMovieList>(),
+    MovieListContract.ViewMovieList,
     MovieAdapter.OnMovieClickListener {
+
 
     private var page = 1
     private var _binding: FragmentMoviePopularBinding? = null
@@ -28,8 +31,12 @@ abstract class BaseMovieListFragment : BaseFragment<MainContract.Presenter<MainC
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentMoviePopularBinding.inflate(inflater, container, false)
-        initializationAttributes()
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initializationAttributes()
     }
 
     private fun initializationAttributes() {
@@ -64,6 +71,7 @@ abstract class BaseMovieListFragment : BaseFragment<MainContract.Presenter<MainC
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        getPresenter().detach()
     }
 
     override fun onMovieClick(movie: Movie) {

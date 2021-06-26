@@ -2,6 +2,8 @@ package com.example.senlastudy
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.example.senlastudy.adapter.MovieFragmentPagerAdapter
 import com.example.senlastudy.databinding.ActivityMainBinding
 import com.example.senlastudy.fragments.movie.MovieNowPlayingFragment
@@ -14,29 +16,51 @@ class MainActivity : AppCompatActivity() {
 
 
     private lateinit var binding: ActivityMainBinding
-    private val adapter:MovieFragmentPagerAdapter by lazy{MovieFragmentPagerAdapter(supportFragmentManager)}
+    private val adapter: MovieFragmentPagerAdapter by lazy {
+        MovieFragmentPagerAdapter(
+            supportFragmentManager
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        adapter.addFragment(MoviePopularListFragment(),"Popular")
-        adapter.addFragment(MovieNowPlayingFragment(),"Now playing")
-        adapter.addFragment(MovieTopRatedFragment(),"Top rated")
-        adapter.addFragment(MovieUpcomingFragment(),"Upcoming")
+        replaceFragment(MoviePopularListFragment())
 
         binding.apply {
-            pager.adapter= adapter
-            tabs.setupWithViewPager(pager)
+            bottomNavigation.setOnNavigationItemSelectedListener { item ->
+                when (item.itemId) {
+                    R.id.action_now_playing -> {
+                        replaceFragment(MovieNowPlayingFragment())
+                    }
+                    R.id.action_top_rated -> {
+                        replaceFragment(MovieTopRatedFragment())
+                    }
+                    R.id.action_upcoming -> {
+                        replaceFragment(MovieUpcomingFragment())
+                    }
+                    R.id.action_popular -> {
+                        replaceFragment(MoviePopularListFragment())
+                    }
+                }
+                true
+            }
         }
 
 
     }
 
+    private fun replaceFragment(fragment: Fragment) {
+        val fragmentManager = supportFragmentManager
+        val transaction = fragmentManager.beginTransaction()
+        transaction.replace(R.id.fragment_container, fragment)
+        transaction.addToBackStack(null)
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+        transaction.commit()
+    }
 
-    //Детальный просмотр фильма
-    //16 и 17
 
 }
 

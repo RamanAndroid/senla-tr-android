@@ -12,20 +12,6 @@ interface MainContract {
         fun detach()
     }
 
-    interface ViewMovieList:View{
-        fun setData(movie: List<Movie>)
-        fun errorResponse(error: Throwable)
-    }
-
-    interface PresenterMovieList<View:ViewMovieList>:Presenter<ViewMovieList>{
-        fun downloadingMovieList(language:String, page:Int)
-    }
-
-    interface ViewMovieDetail:View{
-        fun setData(movie:Movie)
-    }
-
-    interface PresenterMovieDetail<View:ViewMovieDetail>:Presenter<ViewMovieList>
 
 }
 
