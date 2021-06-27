@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.senlastudy.DetailMovieActivity
 import com.example.senlastudy.adapter.MovieAdapter
-import com.example.senlastudy.databinding.FragmentMoviePopularBinding
+import com.example.senlastudy.databinding.FragmentMovieListBinding
 import com.example.senlastudy.fragments.BaseFragment
 import com.example.senlastudy.presenter.MovieListContract
 import com.example.senlastudy.retrofit.pojo.Movie
@@ -22,7 +22,7 @@ abstract class BaseMovieListFragment :
 
 
     private var page = 1
-    private var _binding: FragmentMoviePopularBinding? = null
+    private var _binding: FragmentMovieListBinding? = null
     private val binding get() = _binding!!
     private val adapter: MovieAdapter by lazy { MovieAdapter(this) }
 
@@ -30,7 +30,7 @@ abstract class BaseMovieListFragment :
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentMoviePopularBinding.inflate(inflater, container, false)
+        _binding = FragmentMovieListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -71,7 +71,6 @@ abstract class BaseMovieListFragment :
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        getPresenter().detach()
     }
 
     override fun onMovieClick(movie: Movie) {
