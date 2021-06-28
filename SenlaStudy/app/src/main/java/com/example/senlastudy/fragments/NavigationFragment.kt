@@ -1,5 +1,6 @@
 package com.example.senlastudy.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -30,15 +31,12 @@ class NavigationFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentNavigationBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         replaceFragment(moviePopularListFragment)
-
         binding.apply {
             bottomNavigation.setOnNavigationItemSelectedListener { item ->
                 when (item.itemId) {
@@ -65,18 +63,16 @@ class NavigationFragment : Fragment() {
         _binding = null
     }
 
-
     private fun replaceFragment(fragment: Fragment) {
-        val fragmentManager = activity?.supportFragmentManager
-        val transaction = fragmentManager?.beginTransaction()
-        transaction?.let {
-            transaction.replace(R.id.fragment_container_navigation, fragment)
-            transaction.addToBackStack(null)
-            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-            transaction.commit()
+        val fragmentManager = childFragmentManager
+        val transaction = fragmentManager.beginTransaction()
+        transaction.let {
+            it.replace(R.id.fragment_container_navigation, fragment)
+            it.addToBackStack(null)
+            it.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+            it.commit()
         }
 
     }
-
-
+    //Переделать навигацию через TAG
 }

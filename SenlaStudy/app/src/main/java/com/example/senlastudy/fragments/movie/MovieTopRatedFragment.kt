@@ -9,19 +9,9 @@ import com.example.senlastudy.presenter.rated.BaseTopRatedPresenter
 
 class MovieTopRatedFragment : BaseMovieListFragment() {
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getMovie()
-    }
-
-
-    override fun getMovie() {
-
-        getPresenter().downloadingMovieList(
-            MovieApplication.localLanguage,
-            getPage()
-        )
     }
 
     override fun createPresenter(): MovieListContract.PresenterMovieList {

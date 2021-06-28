@@ -14,15 +14,6 @@ class MovieUpcomingFragment : BaseMovieListFragment() {
         getMovie()
     }
 
-
-    override fun getMovie() {
-
-        getPresenter().downloadingMovieList(
-            MovieApplication.localLanguage,
-            getPage()
-        )
-    }
-
     override fun createPresenter(): MovieListContract.PresenterMovieList {
         return BaseUpcomingPresenter()
     }

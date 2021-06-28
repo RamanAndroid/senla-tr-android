@@ -12,25 +12,21 @@ interface ApiMovie {
 
     @GET("movie/popular")
     fun getPopularMovie(
-        @Query("language") language: String,
         @Query("page") page: Int
     ): Observable<MovieListResponse>
 
     @GET("movie/top_rated")
     fun getTopRatedMovie(
-        @Query("language") language: String,
         @Query("page") page: Int
     ): Observable<MovieListResponse>
 
     @GET("movie/upcoming")
     fun getUpcomingMovie(
-        @Query("language") language: String,
         @Query("page") page: Int
     ): Observable<MovieUpcomingListResponse>
 
     @GET("movie/now_playing")
     fun getNowPlayingMovie(
-        @Query("language") language: String,
         @Query("page") page: Int
     ): Observable<MovieUpcomingListResponse>
 

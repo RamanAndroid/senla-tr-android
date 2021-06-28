@@ -9,11 +9,9 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 class BaseUpcomingPresenter() : BasePresenter<MovieListContract.ViewMovieList>(),
     MovieListContract.PresenterMovieList {
 
-
-    override fun downloadingMovieList(language: String, page: Int) {
-
+    override fun downloadingMovieList(page: Int) {
         getCompositeDisposable().add(
-            MovieApplication.apiService.getUpcomingMovie(language, page)
+            MovieApplication.apiService.getUpcomingMovie(page)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(
@@ -21,6 +19,4 @@ class BaseUpcomingPresenter() : BasePresenter<MovieListContract.ViewMovieList>()
                     { t -> getView().errorResponse(t) })
         )
     }
-
-
 }

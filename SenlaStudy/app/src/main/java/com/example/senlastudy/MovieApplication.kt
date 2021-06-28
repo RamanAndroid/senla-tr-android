@@ -45,7 +45,6 @@ class MovieApplication : Application() {
             .addConverterFactory(gsonConverter)
             .client(okHttpClient)
             .build()
-
         apiService = retrofit.create(ApiMovie::class.java)
     }
 
@@ -59,6 +58,10 @@ class MovieApplication : Application() {
                 var original = chain.request()
                 val url =
                     original.url.newBuilder().addQueryParameter("api_key", BuildConfig.API_KEY)
+                        .addQueryParameter(
+                            "language",
+                            localLanguage
+                        )
                         .build()
                 original = original.newBuilder().url(url).build()
                 chain.proceed(original)
