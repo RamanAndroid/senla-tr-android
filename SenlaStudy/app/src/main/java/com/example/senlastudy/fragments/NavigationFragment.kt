@@ -1,6 +1,5 @@
 package com.example.senlastudy.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,15 +15,13 @@ import com.example.senlastudy.fragments.movie.MovieUpcomingFragment
 
 
 class NavigationFragment : Fragment() {
-
-
     private var _binding: FragmentNavigationBinding? = null
     private val binding get() = _binding!!
 
-    private val movieNowPlayingFragment = MovieNowPlayingFragment()
-    private val movieTopRatedFragment = MovieTopRatedFragment()
-    private val movieUpcomingFragment = MovieUpcomingFragment()
-    private val moviePopularListFragment = MoviePopularListFragment()
+    private val tagNowPlaying = "MOVIE_NOW_PLAYING"
+    private val tagPopular = "MOVIE_POPULAR"
+    private val tagTopRated = "MOVIE_TOP_RATED"
+    private val tagUpcoming = "MOVIE_UPCOMING"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,21 +33,21 @@ class NavigationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        replaceFragment(moviePopularListFragment)
+        replaceFragment(tagPopular)
         binding.apply {
             bottomNavigation.setOnNavigationItemSelectedListener { item ->
                 when (item.itemId) {
                     R.id.action_now_playing -> {
-                        replaceFragment(movieNowPlayingFragment)
+                        replaceFragment(tagNowPlaying)
                     }
                     R.id.action_top_rated -> {
-                        replaceFragment(movieTopRatedFragment)
+                        replaceFragment(tagTopRated)
                     }
                     R.id.action_upcoming -> {
-                        replaceFragment(movieUpcomingFragment)
+                        replaceFragment(tagUpcoming)
                     }
                     R.id.action_popular -> {
-                        replaceFragment(moviePopularListFragment)
+                        replaceFragment(tagPopular)
                     }
                 }
                 true
@@ -63,16 +60,33 @@ class NavigationFragment : Fragment() {
         _binding = null
     }
 
-    private fun replaceFragment(fragment: Fragment) {
+    private fun replaceFragment(tag: String) {
         val fragmentManager = childFragmentManager
         val transaction = fragmentManager.beginTransaction()
-        transaction.let {
-            it.replace(R.id.fragment_container_navigation, fragment)
-            it.addToBackStack(null)
-            it.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-            it.commit()
-        }
+        var fragmentHierarchy = fragmentManager.findFragmentByTag(tag)
+        if (fragmentHierarchy != null) {
+            transaction.replace(R.id.fragment_container_navigation, fragmentHierarchy)
+        } else {
+            when (tag) {
+                tagNowPlaying -> {
+                    fragmentHierarchy = MovieNowPlayingFragment()
+                }
+                tagPopular -> {
+                    fragmentHierarchy = MoviePopularListFragment()
+                }
+                tagUpcoming -> {
+                    fragmentHierarchy = MovieUpcomingFragment()
+                }
+                tagTopRated -> {
+                    fragmentHierarchy = MovieTopRatedFragment()
+                }
 
+            }
+            if (fragmentHierarchy != null) {
+                transaction.add(R.id.fragment_container_navigation, fragmentHierarchy, tag)
+                    .addToBackStack(null)
+            }
+        }
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
     }
-    //Переделать навигацию через TAG
 }

@@ -4,7 +4,10 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.example.senlastudy.presenter.MainContract
 
-
+/*
+Базовый абстрактный класс для всех фрагментов
+Занимается созданием Presenter а также возвращает созданный Presenter
+ */
 abstract class BaseFragment<Presenter : MainContract.Presenter<View>, View : MainContract.View> :
     Fragment() {
 

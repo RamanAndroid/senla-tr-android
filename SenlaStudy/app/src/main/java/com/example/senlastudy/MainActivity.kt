@@ -39,14 +39,14 @@ class MainActivity : AppCompatActivity(), BaseMovieListFragment.NavigationFragme
         val fragmentManager = supportFragmentManager
         val transaction = fragmentManager.beginTransaction()
         val bundle = Bundle()
-        bundle.putParcelable(MovieDetailFragment.MOVIE_EXTRA, movie)
+        bundle.putInt(MovieDetailFragment.MOVIE_EXTRA, movie.id)
         movieDetailFragment.arguments = bundle
-        transaction.let {
-            it.replace(R.id.fragment_container, movieDetailFragment)
-            it.addToBackStack(null)
-            it.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-            it.commit()
-        }
+        transaction.replace(R.id.fragment_container, movieDetailFragment)
+            .addToBackStack(null)
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+            .commit()
     }
+
+
 }
 

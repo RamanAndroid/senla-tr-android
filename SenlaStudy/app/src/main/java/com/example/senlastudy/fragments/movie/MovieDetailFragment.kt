@@ -1,26 +1,28 @@
 package com.example.senlastudy.fragments.movie
 
-import android.app.ActionBar
+import android.app.AlertDialog
+import android.content.DialogInterface
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.NavUtils
-import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.senlastudy.R
 import com.example.senlastudy.databinding.FragmentMovieDetailBinding
+import com.example.senlastudy.fragments.BaseFragment
+import com.example.senlastudy.presenter.DetailMoviePresenter
+import com.example.senlastudy.presenter.MovieDetailContract
 import com.example.senlastudy.retrofit.pojo.Movie
 
 
-class MovieDetailFragment : Fragment() {
-
+class MovieDetailFragment :
+    BaseFragment<MovieDetailContract.PresenterMovieDetail, MovieDetailContract.ViewMovieDetail>(),
+    MovieDetailContract.ViewMovieDetail {
     private var _binding: FragmentMovieDetailBinding? = null
     private val binding get() = _binding!!
-    private var movie: Movie? = null
-
+    private var movie: Int? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,13 +34,34 @@ class MovieDetailFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        movie = arguments?.getParcelable(MOVIE_EXTRA)
+        movie = arguments?.getInt(MOVIE_EXTRA) ?: error("cannot find movie id")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        getMovie()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    companion object {
+        const val MOVIE_EXTRA = "MOVIE_EXTRA"
+    }
+
+    private fun getMovie() {
+        movie?.let { getPresenter().downloadingDetailsMovie(it) }
+    }
+
+    override fun createPresenter(): DetailMoviePresenter {
+        return DetailMoviePresenter()
+    }
+
+    override fun setData(movie: Movie) {
         binding.apply {
-            movie?.let {
+            movie.let {
                 Glide.with(requireContext()).load(it.image).centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .error(
@@ -51,16 +74,19 @@ class MovieDetailFragment : Fragment() {
                 movieDetailOriginalName.text = it.originalTitle
                 movieDetailOriginalLanguage.text = it.originalLanguage
             }
-
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    companion object {
-        const val MOVIE_EXTRA = "MOVIE_EXTRA"
+    override fun errorResponse(t: Throwable) {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Информация об данном фильме не смогла загрузиться!")
+        builder.setCancelable(false)
+        builder.setPositiveButton("Окей") { dialogs, which ->
+            dialogs.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+        dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
     }
 }

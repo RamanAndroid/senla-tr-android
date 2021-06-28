@@ -1,5 +1,6 @@
 package com.example.senlastudy.retrofit.api
 
+import com.example.senlastudy.retrofit.pojo.Movie
 import com.example.senlastudy.retrofit.pojo.MovieListResponse
 import com.example.senlastudy.retrofit.pojo.MovieUpcomingListResponse
 import io.reactivex.rxjava3.core.Observable
@@ -32,8 +33,7 @@ interface ApiMovie {
 
     @GET("movie/{movie_id}")
     fun getMovie(
-        @Path("movie_id")
-        @Query("language") language: String
-    ): Observable<MovieUpcomingListResponse>
+        @Path("movie_id") movieId:Int
+    ): Observable<Movie>
 }
 

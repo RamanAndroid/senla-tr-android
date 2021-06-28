@@ -14,6 +14,16 @@ import com.example.senlastudy.fragments.BaseFragment
 import com.example.senlastudy.presenter.MovieListContract
 import com.example.senlastudy.retrofit.pojo.Movie
 
+
+/*
+Базовый абстрактный класс для Fragment который выводит фильмы в RecyclerView
+Данный класс занимается инициализацией Layout на который выводится информация
+setData - заносит данные  в RecyclerVIew
+errorResponse -  выводит информацию об неудачной загрузки данных
+onMOvieClick - открывает Fragment с полной информацией об Фильме
+getPage - возвращает текущий номер страницы
+getMovie - кидает запрос на скачивание новой страницы с фильмами
+ */
 abstract class BaseMovieListFragment :
     BaseFragment<MovieListContract.PresenterMovieList, MovieListContract.ViewMovieList>(),
     MovieListContract.ViewMovieList,
@@ -35,6 +45,7 @@ abstract class BaseMovieListFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializationAttributes()
+        getMovie()
     }
 
     private fun initializationAttributes() {
@@ -55,6 +66,7 @@ abstract class BaseMovieListFragment :
     }
 
     override fun setData(movie: List<Movie>) {
+        binding.downloadMovie.isVisible = false
         adapter.setData(movie)
         adapter.notifyDataSetChanged()
         binding.noMovie.isVisible = false
@@ -80,11 +92,12 @@ abstract class BaseMovieListFragment :
         fun openMovieDetail(movie: Movie)
     }
 
-    protected fun getPage(): Int {
+    private fun getPage(): Int {
         return page
     }
 
-    protected fun getMovie() {
+    private fun getMovie() {
+        binding.downloadMovie.isVisible = true
         getPresenter().downloadingMovieList(
             getPage()
         )
