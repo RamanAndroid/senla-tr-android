@@ -15,10 +15,7 @@ class MovieDatabaseHelper(context: Context) : SQLiteOpenHelper(
         //Database параметры
         private const val DATABASE_NAME = "Movie"
         private const val DATABASE_VERSION = 1
-        private const val TABLE_NAME_MOVIE_NOW_PLAYING = "now_playing"
-        private const val TABLE_NAME_MOVIE_POPULAR = "popular"
-        private const val TABLE_NAME_MOVIE_TOP_RATED = "top_rated"
-        private const val TABLE_NAME_MOVIE_UPCOMING = "upcoming"
+        private const val TABLE_NAME_MOVIE = "now_playing"
 
         //Наименование полей в Базе данных
         private const val ID = "id"
@@ -27,6 +24,11 @@ class MovieDatabaseHelper(context: Context) : SQLiteOpenHelper(
         private const val RELEASE_DATE = "release_date"
         private const val ORIGINAL_TITLE = "original_title"
         private const val ORIGINAL_LANGUAGE = "original_language"
+        private const val BACKDROP_PATH = "backdrop_path"
+        private const val OVERVIEW = "overview"
+        private const val POPULARITY = "popularity"
+        private const val VOTE_AVERAGE = "vote_average"
+        private const val VOTE_COUNT = "vote_count"
 
         private var movieDatabaseHelper: MovieDatabaseHelper? = null
     }
@@ -44,44 +46,52 @@ class MovieDatabaseHelper(context: Context) : SQLiteOpenHelper(
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
+        /*
         val CREATE_NOW_PLAYING_TABLE: String =
             StringBuilder(
-                "CREATE TABLE $TABLE_NAME_MOVIE_NOW_PLAYING(" +
+                "CREATE TABLE $TABLE_NAME_MOVIE(" +
                         "$ID INTEGER PRIMARY KEY," +
                         "$IMAGE TEXT," +
                         "$TITLE TEXT," +
                         "$RELEASE_DATE TEXT," +
-                        "$ORIGINAL_TITLE TEXT, " +
-                        "$ORIGINAL_LANGUAGE TEXT)"
+                        "$ORIGINAL_TITLE TEXT," +
+                        "$ORIGINAL_LANGUAGE TEXT," +
+                        "$BACKDROP_PATH TEXT," +
+                        "$OVERVIEW TEXT," +
+                        "$POPULARITY INTEGER," +
+                        "$VOTE_AVERAGE INTEGER," +
+                        "$VOTE_COUNT INTEGER)"
             ).toString()
 
+         */
+
+        val CREATE_NOW_PLAYING_TABLE: String? =
+            QueryBuilder().table("movies").pkField("id").field("title", "TEXT NOT NULL").create()
         db?.execSQL(CREATE_NOW_PLAYING_TABLE)
+        db?.compileStatement(
+            QueryBuilder().table("movies").insertField("pupka").field("title", "").insert()
+        )?.execute()
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        if (oldVersion != newVersion) {
-            db?.execSQL("DROP TABLE IF EXISTS $TABLE_NAME_MOVIE_NOW_PLAYING")
-            onCreate(db)
-        }
+    }
+
+    override fun onDowngrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
+        super.onDowngrade(db, oldVersion, newVersion)
     }
 
     fun addMovie(movie: Movie) {
         val db = writableDatabase
         db.beginTransaction()
         try {
-            val values = ContentValues()
-            values.put(ID, movie.id)
-            values.put(IMAGE, movie.image)
-            values.put(RELEASE_DATE, movie.releaseDate)
-            values.put(ORIGINAL_TITLE, movie.originalTitle)
-            values.put(ORIGINAL_LANGUAGE, movie.originalLanguage)
-            db.insertOrThrow(TABLE_NAME_MOVIE_NOW_PLAYING, null, values)
-            db.setTransactionSuccessful()
-        } catch (e: Exception) {
 
         } finally {
             db.endTransaction()
         }
+    }
+
+    fun getMovie() {
+
     }
 
 }

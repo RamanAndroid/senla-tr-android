@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.senlastudy.R
@@ -39,7 +40,7 @@ class MovieDetailFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getMovie()
+        loadMovie()
     }
 
     override fun onDestroyView() {
@@ -51,7 +52,7 @@ class MovieDetailFragment :
         const val MOVIE_EXTRA = "MOVIE_EXTRA"
     }
 
-    private fun getMovie() {
+    private fun loadMovie() {
         movie?.let { getPresenter().downloadingDetailsMovie(it) }
     }
 
@@ -88,5 +89,14 @@ class MovieDetailFragment :
         dialog.show()
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.BLACK)
         dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
+    }
+
+    override fun showViewLoading() {
+        binding.downloadMovie.isVisible = true
+
+    }
+
+    override fun hideViewLoading() {
+        binding.downloadMovie.isVisible = false
     }
 }

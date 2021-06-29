@@ -34,6 +34,7 @@ abstract class BaseFragment<Presenter : MainContract.Presenter<View>, View : Mai
         this.presenter = null
     }
 
+
     abstract fun createPresenter(): Presenter
 
     open fun getMvpView(): View{

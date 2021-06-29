@@ -11,13 +11,20 @@ class TopRatedPresenter : BasePresenter<MovieListContract.ViewMovieList>(),
     MovieListContract.PresenterMovieList {
 
     override fun downloadingMovieList(page: Int) {
+        getView().showViewLoading()
         getCompositeDisposable().add(
             MovieApplication.apiService.getTopRatedMovie(page)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(
-                    { response -> getView().setData(response.results) },
-                    { t -> getView().errorResponse(t) })
+                    { response ->
+                        getView().setData(response.results)
+                        getView().hideViewLoading()
+                    },
+                    { t ->
+                        getView().errorResponse(t)
+                        getView().hideViewLoading()
+                    })
         )
     }
 }

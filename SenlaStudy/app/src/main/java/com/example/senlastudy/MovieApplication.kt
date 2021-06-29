@@ -1,6 +1,8 @@
 package com.example.senlastudy
 
 import android.app.Application
+import android.database.sqlite.SQLiteDatabase
+import com.example.senlastudy.database.MovieDatabaseHelper
 import com.example.senlastudy.retrofit.api.ApiMovie
 import com.example.senlastudy.utils.Constants
 import com.google.gson.GsonBuilder
@@ -26,6 +28,9 @@ class MovieApplication : Application() {
 
         lateinit var localLanguage: String
             private set
+
+        lateinit var movieDataBaseHelper: SQLiteDatabase
+            private set
     }
 
     override fun onCreate() {
@@ -34,6 +39,8 @@ class MovieApplication : Application() {
         createGsonConverter()
         createOkHttpClient()
         createApiService()
+        createDataBaseHelper()
+
     }
 
     private fun createApiService() {
@@ -85,5 +92,14 @@ class MovieApplication : Application() {
 
     private fun getDefaultLanguage() {
         localLanguage = Locale.getDefault().language
+    }
+
+    private fun createDataBaseHelper(){
+        movieDataBaseHelper = MovieDatabaseHelper(this).getMovieDataBaseHelper(this).writableDatabase
+
+    }
+
+    fun getDatabaseHelper(): SQLiteDatabase {
+        return movieDataBaseHelper
     }
 }

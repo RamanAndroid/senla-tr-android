@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.senlastudy.MovieApplication
 import com.example.senlastudy.adapter.MovieAdapter
+import com.example.senlastudy.database.QueryBuilder
 import com.example.senlastudy.databinding.FragmentMovieListBinding
 import com.example.senlastudy.fragments.BaseFragment
 import com.example.senlastudy.presenter.MovieListContract
@@ -48,6 +49,11 @@ abstract class BaseMovieListFragment :
         getMovie()
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        MovieApplication()
+    }
+
     private fun initializationAttributes() {
         binding.rvMovieList.adapter = adapter
         binding.rvMovieList.setHasFixedSize(true)
@@ -65,12 +71,19 @@ abstract class BaseMovieListFragment :
         })
     }
 
-    override fun setData(movie: List<Movie>) {
+    override fun showViewLoading() {
+        binding.rvMovieList.isVisible =false
+        binding.downloadMovie.isVisible = true
+    }
+
+    override fun hideViewLoading() {
+        binding.rvMovieList.isVisible = true
         binding.downloadMovie.isVisible = false
+    }
+
+    override fun setData(movie: List<Movie>) {
         adapter.setData(movie)
         adapter.notifyDataSetChanged()
-        binding.noMovie.isVisible = false
-        binding.rvMovieList.isVisible = true
     }
 
     override fun errorResponse(error: Throwable) {
@@ -97,7 +110,6 @@ abstract class BaseMovieListFragment :
     }
 
     private fun getMovie() {
-        binding.downloadMovie.isVisible = true
         getPresenter().downloadingMovieList(
             getPage()
         )

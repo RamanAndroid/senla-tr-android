@@ -67,26 +67,32 @@ class NavigationFragment : Fragment() {
         if (fragmentHierarchy != null) {
             transaction.replace(R.id.fragment_container_navigation, fragmentHierarchy)
         } else {
-            when (tag) {
-                tagNowPlaying -> {
-                    fragmentHierarchy = MovieNowPlayingFragment()
-                }
-                tagPopular -> {
-                    fragmentHierarchy = MoviePopularListFragment()
-                }
-                tagUpcoming -> {
-                    fragmentHierarchy = MovieUpcomingFragment()
-                }
-                tagTopRated -> {
-                    fragmentHierarchy = MovieTopRatedFragment()
-                }
-
-            }
+            fragmentHierarchy = createFragment(tag)
             if (fragmentHierarchy != null) {
                 transaction.add(R.id.fragment_container_navigation, fragmentHierarchy, tag)
                     .addToBackStack(null)
             }
         }
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
+    }
+
+    private fun createFragment(tag: String): Fragment? {
+        return when (tag) {
+            tagNowPlaying -> {
+                MovieNowPlayingFragment()
+            }
+            tagPopular -> {
+                MoviePopularListFragment()
+            }
+            tagUpcoming -> {
+                MovieUpcomingFragment()
+            }
+            tagTopRated -> {
+                MovieTopRatedFragment()
+            }
+
+            else -> null
+        }
+
     }
 }

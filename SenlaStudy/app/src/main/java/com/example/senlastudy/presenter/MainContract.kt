@@ -4,7 +4,10 @@ import com.example.senlastudy.retrofit.pojo.Movie
 
 interface MainContract {
 
-    interface View
+    interface View{
+        fun showViewLoading()
+        fun hideViewLoading()
+    }
 
     interface Presenter<View : MainContract.View> {
 

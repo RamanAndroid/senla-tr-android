@@ -8,13 +8,20 @@ class DetailMoviePresenter : BasePresenter<MovieDetailContract.ViewMovieDetail>(
     MovieDetailContract.PresenterMovieDetail {
 
     override fun downloadingDetailsMovie(movieId: Int) {
+        getView().showViewLoading()
         getCompositeDisposable().add(
             MovieApplication.apiService.getMovie(movieId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(
-                    { response -> getView().setData(response) },
-                    { t -> getView().errorResponse(t) })
+                    { response ->
+                        getView().setData(response)
+                        getView().hideViewLoading()
+                    },
+                    { t ->
+                        getView().errorResponse(t)
+                        getView().hideViewLoading()
+                    })
         )
     }
 
