@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.senlastudy.MovieApplication
 import com.example.senlastudy.adapter.MovieAdapter
+import com.example.senlastudy.database.MovieDatabaseHelper
+import com.example.senlastudy.database.QueryBuilder
 import com.example.senlastudy.databinding.FragmentMovieListBinding
 import com.example.senlastudy.fragments.BaseFragment
 import com.example.senlastudy.presenter.MovieListContract
@@ -50,7 +52,6 @@ abstract class BaseMovieListFragment :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        MovieApplication()
     }
 
     private fun initializationAttributes() {
@@ -71,7 +72,7 @@ abstract class BaseMovieListFragment :
     }
 
     override fun showViewLoading() {
-        binding.rvMovieList.isVisible =false
+        binding.rvMovieList.isVisible = false
         binding.downloadMovie.isVisible = true
     }
 

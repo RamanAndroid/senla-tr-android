@@ -34,6 +34,6 @@ interface ApiMovie {
     @GET("movie/{movie_id}")
     fun getMovie(
         @Path("movie_id") movieId:Int
-    ): Observable<Movie>
+    ): Movie
 }
 

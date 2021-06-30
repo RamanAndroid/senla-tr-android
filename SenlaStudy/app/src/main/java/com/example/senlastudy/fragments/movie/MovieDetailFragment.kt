@@ -3,7 +3,9 @@ package com.example.senlastudy.fragments.movie
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.graphics.Color
+import android.icu.text.CaseMap
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +13,7 @@ import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.senlastudy.R
+import com.example.senlastudy.database.MovieDatabaseHelper
 import com.example.senlastudy.databinding.FragmentMovieDetailBinding
 import com.example.senlastudy.fragments.BaseFragment
 import com.example.senlastudy.presenter.DetailMoviePresenter
@@ -41,10 +44,12 @@ class MovieDetailFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadMovie()
+        MovieDatabaseHelper(requireContext()).openDatabaseHelper(requireContext())
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        MovieDatabaseHelper(requireContext()).closeDatabaseHelper()
         _binding = null
     }
 
@@ -61,6 +66,9 @@ class MovieDetailFragment :
     }
 
     override fun setData(movie: Movie) {
+        val movieTest = MovieDatabaseHelper.selectByFieldValue("movies", "title", movie.title)
+
+        MovieDatabaseHelper.insertMovie(movie)
         binding.apply {
             movie.let {
                 Glide.with(requireContext()).load(it.image).centerCrop()
@@ -83,6 +91,7 @@ class MovieDetailFragment :
         builder.setTitle("Информация об данном фильме не смогла загрузиться!")
         builder.setCancelable(false)
         builder.setPositiveButton("Окей") { dialogs, which ->
+            activity?.onBackPressed()
             dialogs.dismiss()
         }
         val dialog = builder.create()
