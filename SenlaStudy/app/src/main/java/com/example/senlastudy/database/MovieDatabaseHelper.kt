@@ -1,6 +1,5 @@
 package com.example.senlastudy.database
 
-import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
@@ -65,11 +64,15 @@ class MovieDatabaseHelper(context: Context) : SQLiteOpenHelper(
 
          */
 
-        val CREATE_NOW_PLAYING_TABLE: String? =
-            QueryBuilder().table("movies").pkField("id").field("title", "TEXT NOT NULL").create()
-        db?.execSQL(CREATE_NOW_PLAYING_TABLE)
+
+
+        db?.execSQL(
+            QueryBuilder().table("movies").pkField("id").insertField("title", "TEXT NOT NULL")
+                .create()
+        )
         db?.compileStatement(
-            QueryBuilder().table("movies").insertField("pupka").field("title", "").insert()
+            QueryBuilder().table("movies").insertValue("123").insertField("title", "")
+                .insert()
         )?.execute()
     }
 
@@ -78,20 +81,6 @@ class MovieDatabaseHelper(context: Context) : SQLiteOpenHelper(
 
     override fun onDowngrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         super.onDowngrade(db, oldVersion, newVersion)
-    }
-
-    fun addMovie(movie: Movie) {
-        val db = writableDatabase
-        db.beginTransaction()
-        try {
-
-        } finally {
-            db.endTransaction()
-        }
-    }
-
-    fun getMovie() {
-
     }
 
 }

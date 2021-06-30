@@ -2,72 +2,59 @@ package com.example.senlastudy.database
 
 class QueryBuilder {
 
-    private val sqlText = StringBuilder()
-    private val sqlText2 = StringBuilder()
-    private val sqlStart = mutableListOf<String>()
-    private val sqlArguments = mutableListOf<String>()
-    private val sqlFields = mutableListOf<String>()
+    private val tableName = mutableListOf<String>()
+    private val fieldValues = mutableListOf<String>()
+    private val tableFieldsWithParameter = mutableListOf<String>()
 
     fun table(tableName: String): QueryBuilder {
-        this.sqlStart.add(tableName)
+        this.tableName.add(tableName)
         return this
     }
 
     fun pkField(id: String): QueryBuilder {
-        this.sqlFields.add(" $id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,")
+        this.tableFieldsWithParameter.add("$id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,")
         return this
     }
 
-    fun field(name: String, type: String): QueryBuilder {
-        this.sqlFields.add("$name $type")
-
+    fun insertField(name: String, type: String): QueryBuilder {
+        this.tableFieldsWithParameter.add("$name $type")
+        tableFieldsWithParameter.add(",")
         return this
     }
 
     fun create(): String {
-        sqlFields.forEach {
+        tableFieldsWithParameter.removeAt(tableFieldsWithParameter.size - 1)
+        return "CREATE TABLE if not EXISTS ${tableName[0]} (${
+            tableFieldsWithParameter.joinToString(
+                "",
+                "",
+                ""
+            )
+        })"
 
-            var i = 0
-            if (i == sqlFields.size - 1) {
-                sqlText.append("")
-            } else {
-                sqlText.append(it)
-            }
-            i += 1
-        }
-        return StringBuilder().append("CREATE TABLE if not EXISTS ${sqlStart[0]} ($sqlText)")
-            .toString()
     }
 
-    fun insertField(argument: String): QueryBuilder {
-        this.sqlArguments.add(argument)
-        this.sqlArguments.add(",")
+    fun insertValue(argument: String): QueryBuilder {
+        this.fieldValues.add(argument)
+        this.fieldValues.add(",")
         return this
     }
 
     fun insert(): String {
-        var i = 0
-        sqlArguments.forEach {
+        tableFieldsWithParameter.removeAt(tableFieldsWithParameter.size - 1)
+        fieldValues.removeAt(fieldValues.size - 1)
+        return "INSERT INTO ${tableName[0]} (${
+            tableFieldsWithParameter.joinToString(
+                "",
+                "",
+                ""
+            )
+        }) VALUES (${fieldValues.joinToString("", "", "")})"
 
-            if (i == sqlArguments.size - 1) {
-                sqlText2.append("")
-            } else {
-                sqlText2.append(it)
-            }
-            i += 1
-        }
+    }
 
-        sqlFields.forEach {
-            var a = 0
-            if (a == sqlFields.size - 1) {
-                sqlText.append("")
-            } else {
-                sqlText.append(it)
-            }
-            a += 1
-        }
-        return StringBuilder().append("INSERT INTO ${sqlStart[0]} ($sqlText) VALUES ($sqlText2)")
-            .toString()
+    fun select(tableName: String): String {
+        return "SELECT * FROM $tableName"
     }
 
 
