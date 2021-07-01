@@ -1,10 +1,11 @@
 package com.example.senlastudy.presenter
 
 import com.example.senlastudy.retrofit.pojo.Movie
+import com.example.senlastudy.retrofit.pojo.TestMovie
 
 interface MovieDetailContract {
     interface ViewMovieDetail : MainContract.View {
-        fun setData(movie: Movie)
+        fun setData(movie: TestMovie)
         fun errorResponse(t:Throwable)
     }
 

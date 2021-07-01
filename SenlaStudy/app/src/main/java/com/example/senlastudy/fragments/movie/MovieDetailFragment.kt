@@ -19,6 +19,7 @@ import com.example.senlastudy.fragments.BaseFragment
 import com.example.senlastudy.presenter.DetailMoviePresenter
 import com.example.senlastudy.presenter.MovieDetailContract
 import com.example.senlastudy.retrofit.pojo.Movie
+import com.example.senlastudy.retrofit.pojo.TestMovie
 
 
 class MovieDetailFragment :
@@ -65,10 +66,7 @@ class MovieDetailFragment :
         return DetailMoviePresenter()
     }
 
-    override fun setData(movie: Movie) {
-        val movieTest = MovieDatabaseHelper.selectByFieldValue("movies", "title", movie.title)
-
-        MovieDatabaseHelper.insertMovie(movie)
+    override fun setData(movie: TestMovie) {
         binding.apply {
             movie.let {
                 Glide.with(requireContext()).load(it.image).centerCrop()

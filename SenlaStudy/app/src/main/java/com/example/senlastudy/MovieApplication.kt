@@ -1,7 +1,6 @@
 package com.example.senlastudy
 
 import android.app.Application
-import com.example.senlastudy.database.MovieDatabaseHelper
 import com.example.senlastudy.retrofit.api.ApiMovie
 import com.example.senlastudy.utils.Constants
 import com.google.gson.GsonBuilder
@@ -58,12 +57,15 @@ class MovieApplication : Application() {
             .addInterceptor { chain ->
                 var original = chain.request()
                 val url =
-                    original.url.newBuilder().addQueryParameter("api_key", BuildConfig.API_KEY)
+                    original.url.newBuilder()
+                        .addQueryParameter(
+                            "api_key",
+                            BuildConfig.API_KEY
+                        )
                         .addQueryParameter(
                             "language",
                             localLanguage
-                        )
-                        .build()
+                        ).build()
                 original = original.newBuilder().url(url).build()
                 chain.proceed(original)
             }

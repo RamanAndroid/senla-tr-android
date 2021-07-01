@@ -34,17 +34,15 @@ class MovieDatabaseHelper(context: Context) : SQLiteOpenHelper(
         private const val VOTE_COUNT = "vote_count"
         private const val RECORDING_TIME = "recording_time"
 
-        private var movieWritableDatabaseHelper: SQLiteDatabase? = null
-        private var movieReadableDatabaseHelper: SQLiteDatabase? = null
+        private var movieDatabaseHelper: SQLiteDatabase? = null
 
-        fun insertMovie(movie: Movie) {
+        fun insertMovie(movie: TestMovie) {
             val currentDate = Date()
             val dateFormat: DateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
             val dateText: String = dateFormat.format(currentDate)
-            movieWritableDatabaseHelper?.compileStatement(
+            movieDatabaseHelper?.compileStatement(
                 QueryBuilder().table("movies")
                     .insertField(ID_MOVIE, "").insertValue("${movie.id},")
-                    .insertField(IMAGE, "").insertValue("\"${movie.image}\",")
                     .insertField(TITLE, "").insertValue("\"${movie.title}\",")
                     .insertField(RELEASE_DATE, "").insertValue("\"${movie.releaseDate}\",")
                     .insertField(ORIGINAL_TITLE, "").insertValue("\"${movie.originalTitle}\",")
@@ -60,18 +58,17 @@ class MovieDatabaseHelper(context: Context) : SQLiteOpenHelper(
             )?.execute()
         }
 
-        fun selectByFieldValue(tableName: String, field: String, value: String): TestMovie {
+        fun selectByFieldValue(tableName: String, field: String, value: Int): TestMovie? {
 
-            lateinit var movie:TestMovie
-            val cursor = movieReadableDatabaseHelper?.rawQuery(
+            var movie: TestMovie? = null
+            val cursor = movieDatabaseHelper?.rawQuery(
                 "SELECT * FROM $tableName WHERE $field = '$value'",
                 null
             )
             if (cursor != null) {
 
                 if (cursor.moveToFirst()) {
-                    val idColumn = cursor.getColumnIndexOrThrow(ID_DATABASE)
-                    val imageColumn = cursor.getColumnIndexOrThrow(IMAGE)
+                    val idColumn = cursor.getColumnIndexOrThrow(ID_MOVIE)
                     val titleColumn = cursor.getColumnIndexOrThrow(TITLE)
                     val releaseDateColumn = cursor.getColumnIndexOrThrow(RELEASE_DATE)
                     val originalTitleColumn = cursor.getColumnIndexOrThrow(ORIGINAL_TITLE)
@@ -85,7 +82,6 @@ class MovieDatabaseHelper(context: Context) : SQLiteOpenHelper(
                     do {
 
                         val id = cursor.getInt(idColumn)
-                        val image = cursor.getString(imageColumn)
                         val title = cursor.getString(titleColumn)
                         val releaseDate = cursor.getString(releaseDateColumn)
                         val originalTitle = cursor.getString(originalTitleColumn)
@@ -97,18 +93,17 @@ class MovieDatabaseHelper(context: Context) : SQLiteOpenHelper(
                         val voteCount = cursor.getString(voteCountColumn)
 
 
-                            movie = TestMovie(
-                                id,
-                                image,
-                                title,
-                                releaseDate,
-                                originalTitle,
-                                originalLanguage,
-                                backdropPath,
-                                overview,
-                                popularity,
-                                voteAverage,
-                                voteCount
+                        movie = TestMovie(
+                            id,
+                            title,
+                            releaseDate,
+                            originalTitle,
+                            originalLanguage,
+                            backdropPath,
+                            overview,
+                            popularity,
+                            voteAverage,
+                            voteCount
                         )
                     } while (cursor.moveToNext())
                 }
@@ -119,16 +114,14 @@ class MovieDatabaseHelper(context: Context) : SQLiteOpenHelper(
     }
 
     fun openDatabaseHelper(context: Context) {
-        if (movieWritableDatabaseHelper == null && movieReadableDatabaseHelper == null) {
-            movieWritableDatabaseHelper = MovieDatabaseHelper(context).writableDatabase
-            movieReadableDatabaseHelper = MovieDatabaseHelper(context).readableDatabase
+        if (movieDatabaseHelper == null && movieDatabaseHelper == null) {
+            movieDatabaseHelper = MovieDatabaseHelper(context).writableDatabase
         }
     }
 
 
     fun closeDatabaseHelper() {
-        movieReadableDatabaseHelper = null
-        movieReadableDatabaseHelper = null
+        movieDatabaseHelper = null
     }
 
     override fun onConfigure(db: SQLiteDatabase?) {
