@@ -8,7 +8,6 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.ObservableOnSubscribe
 import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlin.coroutines.suspendCoroutine
 
 
 class DetailMoviePresenter : BasePresenter<MovieDetailContract.ViewMovieDetail>(),
@@ -16,18 +15,13 @@ class DetailMoviePresenter : BasePresenter<MovieDetailContract.ViewMovieDetail>(
 
     override fun downloadingDetailsMovie(movieId: Int) {
         val createObserver = Observable.create(ObservableOnSubscribe<TestMovie> { emitter ->
-            var movieTest = MovieDatabaseHelper.selectByFieldValue("movies", "title", movieId)
+            var movieTest = MovieDatabaseHelper.selectByFieldValue("movies", "id_movie", movieId)
             if (movieTest != null) {
                 emitter.onNext(movieTest)
             } else {
-
-               val response = MovieApplication.apiService.getMovie(movieId)
-
-                /*
-                MovieDatabaseHelper.insertMovie(movieTest)
-                movieTest = MovieDatabaseHelper.selectByFieldValue("movies", "title", movieId)
-
-                 */
+                val response = MovieApplication.apiService.getMovie(movieId).execute()
+                response.body()?.let { MovieDatabaseHelper.insertMovie(it) }
+                movieTest = MovieDatabaseHelper.selectByFieldValue("movies", "id_movie", movieId)
                 emitter.onNext(movieTest)
             }
             emitter.onComplete()
@@ -40,7 +34,6 @@ class DetailMoviePresenter : BasePresenter<MovieDetailContract.ViewMovieDetail>(
             .subscribe({ movieTest ->
                 getView().setData(movieTest)
             }, { t ->
-                Log.d("ERROR", t.toString())
                 getView().errorResponse(t)
             })
     }

@@ -4,6 +4,7 @@ import com.example.senlastudy.retrofit.pojo.MovieListResponse
 import com.example.senlastudy.retrofit.pojo.MovieUpcomingListResponse
 import com.example.senlastudy.retrofit.pojo.TestMovie
 import io.reactivex.rxjava3.core.Observable
+import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -33,6 +34,6 @@ interface ApiMovie {
     @GET("movie/{movie_id}")
     fun getMovie(
         @Path("movie_id") movieId: Int
-    ): TestMovie
+    ): Call<TestMovie>
 }
 

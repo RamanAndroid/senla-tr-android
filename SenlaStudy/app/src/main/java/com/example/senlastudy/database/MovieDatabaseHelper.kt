@@ -22,7 +22,6 @@ class MovieDatabaseHelper(context: Context) : SQLiteOpenHelper(
         //Наименование полей в Базе данных
         private const val ID_DATABASE = "id_database"
         private const val ID_MOVIE = "id_movie"
-        private const val IMAGE = "image"
         private const val TITLE = "title"
         private const val RELEASE_DATE = "release_date"
         private const val ORIGINAL_TITLE = "original_title"
@@ -133,7 +132,6 @@ class MovieDatabaseHelper(context: Context) : SQLiteOpenHelper(
         db?.execSQL(
             QueryBuilder().table("movies").pkField(ID_DATABASE)
                 .insertField(ID_MOVIE, "INTEGER NOT NULL")
-                .insertField(IMAGE, "TEXT NOT NULL")
                 .insertField(TITLE, "TEXT NOT NULL")
                 .insertField(RELEASE_DATE, "TEXT NOT NULL")
                 .insertField(ORIGINAL_TITLE, "TEXT NOT NULL")
