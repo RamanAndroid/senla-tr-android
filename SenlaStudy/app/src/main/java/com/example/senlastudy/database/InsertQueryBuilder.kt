@@ -1,5 +1,7 @@
 package com.example.senlastudy.database
 
+import java.util.*
+
 class InsertQueryBuilder {
 
     private val tableName = mutableListOf<String>()
@@ -10,8 +12,23 @@ class InsertQueryBuilder {
         return this
     }
 
-    fun insertValue(nameField: String, argument: String): InsertQueryBuilder {
+    fun insertTextValue(nameField: String, argument: String): InsertQueryBuilder {
         tableFieldsWithArgument[nameField] = argument
+        return this
+    }
+
+    fun insertIntegerValue(nameField: String, argument: Int): InsertQueryBuilder {
+        tableFieldsWithArgument[nameField] = argument.toString()
+        return this
+    }
+
+    fun insertBlobValue(nameField: String, argument: Objects): InsertQueryBuilder {
+        tableFieldsWithArgument[nameField] = argument.toString()
+        return this
+    }
+
+    fun insertRealValue(nameField: String, argument: Double): InsertQueryBuilder {
+        tableFieldsWithArgument[nameField] = argument.toString()
         return this
     }
 
