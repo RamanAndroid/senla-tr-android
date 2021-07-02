@@ -11,7 +11,7 @@ import com.example.senlastudy.fragments.movie.MovieDetailFragment
 import com.example.senlastudy.retrofit.pojo.Movie
 
 
-class MainActivity : AppCompatActivity(), BaseMovieListFragment.NavigationFragment {
+class MainActivity : AppCompatActivity(), BaseMovieListFragment.Navigator {
 
     private lateinit var binding: ActivityMainBinding
     private val adapter: MovieFragmentPagerAdapter by lazy {

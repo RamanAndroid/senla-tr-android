@@ -29,7 +29,7 @@ class DetailMoviePresenter : BasePresenter<MovieDetailContract.ViewMovieDetail>(
 
         createObserver.observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
-            .doOnSubscribe { getView().hideViewLoading() }
+            .doOnSubscribe { getView().showViewLoading() }
             .doFinally { getView().hideViewLoading() }
             .subscribe({ movieTest ->
                 getView().setData(movieTest)

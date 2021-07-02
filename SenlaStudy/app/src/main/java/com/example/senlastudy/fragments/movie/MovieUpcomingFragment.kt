@@ -5,11 +5,7 @@ import com.example.senlastudy.presenter.upcoming.UpcomingPresenter
 
 
 class MovieUpcomingFragment : BaseMovieListFragment() {
-
-
-
     override fun createPresenter(): MovieListContract.PresenterMovieList {
         return UpcomingPresenter()
     }
-
 }

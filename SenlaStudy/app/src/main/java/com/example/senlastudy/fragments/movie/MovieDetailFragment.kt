@@ -3,9 +3,7 @@ package com.example.senlastudy.fragments.movie
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.graphics.Color
-import android.icu.text.CaseMap
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +16,6 @@ import com.example.senlastudy.databinding.FragmentMovieDetailBinding
 import com.example.senlastudy.fragments.BaseFragment
 import com.example.senlastudy.presenter.DetailMoviePresenter
 import com.example.senlastudy.presenter.MovieDetailContract
-import com.example.senlastudy.retrofit.pojo.Movie
 import com.example.senlastudy.retrofit.pojo.TestMovie
 
 
@@ -28,6 +25,11 @@ class MovieDetailFragment :
     private var _binding: FragmentMovieDetailBinding? = null
     private val binding get() = _binding!!
     private var movie: Int? = null
+
+    companion object {
+        const val MOVIE_EXTRA = "MOVIE_EXTRA"
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,17 +47,12 @@ class MovieDetailFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadMovie()
-        MovieDatabaseHelper(requireContext()).openDatabaseHelper(requireContext())
+        MovieDatabaseHelper(requireContext()).movieDatabaseHelper(requireContext())
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        MovieDatabaseHelper(requireContext()).closeDatabaseHelper()
         _binding = null
-    }
-
-    companion object {
-        const val MOVIE_EXTRA = "MOVIE_EXTRA"
     }
 
     private fun loadMovie() {
@@ -106,4 +103,5 @@ class MovieDetailFragment :
     override fun hideViewLoading() {
         binding.downloadMovie.isVisible = false
     }
+
 }

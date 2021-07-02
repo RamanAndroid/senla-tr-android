@@ -3,7 +3,6 @@ package com.example.senlastudy.database
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.example.senlastudy.retrofit.pojo.Movie
 import com.example.senlastudy.retrofit.pojo.TestMovie
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -40,19 +39,18 @@ class MovieDatabaseHelper(context: Context) : SQLiteOpenHelper(
             val dateFormat: DateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
             val dateText: String = dateFormat.format(currentDate)
             movieDatabaseHelper?.compileStatement(
-                QueryBuilder().table("movies")
-                    .insertField(ID_MOVIE, "").insertValue("${movie.id},")
-                    .insertField(TITLE, "").insertValue("\"${movie.title}\",")
-                    .insertField(RELEASE_DATE, "").insertValue("\"${movie.releaseDate}\",")
-                    .insertField(ORIGINAL_TITLE, "").insertValue("\"${movie.originalTitle}\",")
-                    .insertField(ORIGINAL_LANGUAGE, "")
-                    .insertValue("\"${movie.originalLanguage}\",")
-                    .insertField(BACKDROP_PATH, "").insertValue("\"${movie.backdropPath}\",")
-                    .insertField(OVERVIEW, "").insertValue("\"${movie.overview}\",")
-                    .insertField(POPULARITY, "").insertValue("\"${movie.popularity}\",")
-                    .insertField(VOTE_AVERAGE, "").insertValue("\"${movie.voteAverage}\",")
-                    .insertField(VOTE_COUNT, "").insertValue("\"${movie.voteCount}\",")
-                    .insertField(RECORDING_TIME, "").insertValue("\"${dateText}\"")
+                InsertQueryBuilder().table("movies")
+                    .insertValue(ID_MOVIE, "${movie.id}")
+                    .insertValue(TITLE, "\"${movie.title}\"")
+                    .insertValue(RELEASE_DATE, "\"${movie.releaseDate}\"")
+                    .insertValue(ORIGINAL_TITLE, "\"${movie.originalTitle}\"")
+                    .insertValue(ORIGINAL_LANGUAGE, "\"${movie.originalLanguage}\"")
+                    .insertValue(BACKDROP_PATH, "\"${movie.backdropPath}\"")
+                    .insertValue(OVERVIEW, "\"${movie.overview}\"")
+                    .insertValue(POPULARITY, "\"${movie.popularity}\"")
+                    .insertValue(VOTE_AVERAGE, "\"${movie.voteAverage}\"")
+                    .insertValue(VOTE_COUNT, "\"${movie.voteCount}\"")
+                    .insertValue(RECORDING_TIME, "\"${dateText}\"")
                     .insert()
             )?.execute()
         }
@@ -112,15 +110,12 @@ class MovieDatabaseHelper(context: Context) : SQLiteOpenHelper(
         }
     }
 
-    fun openDatabaseHelper(context: Context) {
-        if (movieDatabaseHelper == null && movieDatabaseHelper == null) {
-            movieDatabaseHelper = MovieDatabaseHelper(context).writableDatabase
+    fun movieDatabaseHelper(context: Context) {
+        movieDatabaseHelper = if (movieDatabaseHelper == null) {
+            MovieDatabaseHelper(context).writableDatabase
+        } else {
+            null
         }
-    }
-
-
-    fun closeDatabaseHelper() {
-        movieDatabaseHelper = null
     }
 
     override fun onConfigure(db: SQLiteDatabase?) {
@@ -130,18 +125,18 @@ class MovieDatabaseHelper(context: Context) : SQLiteOpenHelper(
 
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL(
-            QueryBuilder().table("movies").pkField(ID_DATABASE)
-                .insertField(ID_MOVIE, "INTEGER NOT NULL")
-                .insertField(TITLE, "TEXT NOT NULL")
-                .insertField(RELEASE_DATE, "TEXT NOT NULL")
-                .insertField(ORIGINAL_TITLE, "TEXT NOT NULL")
-                .insertField(ORIGINAL_LANGUAGE, "TEXT NOT NULL")
-                .insertField(BACKDROP_PATH, "TEXT NOT NULL")
-                .insertField(OVERVIEW, "TEXT NOT NULL")
-                .insertField(POPULARITY, "TEXT NOT NULL")
-                .insertField(VOTE_AVERAGE, "TEXT NOT NULL")
-                .insertField(VOTE_COUNT, "TEXT NOT NULL")
-                .insertField(RECORDING_TIME, "TEXT NOT NULL")
+            CreateQueryBuilder().table("movies").pkField(ID_DATABASE, true)
+                .insertTextField(ID_MOVIE, true)
+                .insertTextField(TITLE, true)
+                .insertTextField(RELEASE_DATE, true)
+                .insertTextField(ORIGINAL_TITLE, true)
+                .insertTextField(ORIGINAL_LANGUAGE, true)
+                .insertTextField(BACKDROP_PATH, true)
+                .insertTextField(OVERVIEW, true)
+                .insertTextField(POPULARITY, true)
+                .insertTextField(VOTE_AVERAGE, true)
+                .insertTextField(VOTE_COUNT, true)
+                .insertTextField(RECORDING_TIME, true)
                 .create()
         )
 

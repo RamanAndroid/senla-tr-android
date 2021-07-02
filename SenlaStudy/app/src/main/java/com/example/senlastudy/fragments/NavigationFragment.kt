@@ -18,10 +18,12 @@ class NavigationFragment : Fragment() {
     private var _binding: FragmentNavigationBinding? = null
     private val binding get() = _binding!!
 
-    private val tagNowPlaying = "MOVIE_NOW_PLAYING"
-    private val tagPopular = "MOVIE_POPULAR"
-    private val tagTopRated = "MOVIE_TOP_RATED"
-    private val tagUpcoming = "MOVIE_UPCOMING"
+    companion object {
+        private const val tagNowPlaying = "MOVIE_NOW_PLAYING"
+        private const val tagPopular = "MOVIE_POPULAR"
+        private const val tagTopRated = "MOVIE_TOP_RATED"
+        private const val tagUpcoming = "MOVIE_UPCOMING"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,13 +65,13 @@ class NavigationFragment : Fragment() {
     private fun replaceFragment(tag: String) {
         val fragmentManager = childFragmentManager
         val transaction = fragmentManager.beginTransaction()
-        var fragmentHierarchy = fragmentManager.findFragmentByTag(tag)
-        if (fragmentHierarchy != null) {
-            transaction.replace(R.id.fragment_container_navigation, fragmentHierarchy)
+        var nowDisplayedFragment = fragmentManager.findFragmentByTag(tag)
+        if (nowDisplayedFragment != null) {
+            transaction.replace(R.id.fragment_container_navigation, nowDisplayedFragment)
         } else {
-            fragmentHierarchy = createFragment(tag)
-            if (fragmentHierarchy != null) {
-                transaction.add(R.id.fragment_container_navigation, fragmentHierarchy, tag)
+            nowDisplayedFragment = createFragment(tag)
+            if (nowDisplayedFragment != null) {
+                transaction.add(R.id.fragment_container_navigation, nowDisplayedFragment, tag)
                     .addToBackStack(null)
             }
         }
@@ -90,7 +92,6 @@ class NavigationFragment : Fragment() {
             tagTopRated -> {
                 MovieTopRatedFragment()
             }
-
             else -> null
         }
 

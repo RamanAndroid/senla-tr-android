@@ -7,10 +7,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.senlastudy.MovieApplication
 import com.example.senlastudy.adapter.MovieAdapter
-import com.example.senlastudy.database.MovieDatabaseHelper
-import com.example.senlastudy.database.QueryBuilder
 import com.example.senlastudy.databinding.FragmentMovieListBinding
 import com.example.senlastudy.fragments.BaseFragment
 import com.example.senlastudy.presenter.MovieListContract
@@ -97,12 +94,8 @@ abstract class BaseMovieListFragment :
     }
 
     override fun onMovieClick(movie: Movie) {
-        val activity = (context as NavigationFragment)
+        val activity = (context as Navigator)
         activity.openMovieDetail(movie)
-    }
-
-    interface NavigationFragment {
-        fun openMovieDetail(movie: Movie)
     }
 
     private fun getPage(): Int {
@@ -113,6 +106,10 @@ abstract class BaseMovieListFragment :
         getPresenter().downloadingMovieList(
             getPage()
         )
+    }
+
+    interface Navigator {
+        fun openMovieDetail(movie: Movie)
     }
 
 }
