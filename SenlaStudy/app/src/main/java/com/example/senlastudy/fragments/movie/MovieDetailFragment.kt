@@ -10,13 +10,13 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.example.senlastudy.MovieApplication
 import com.example.senlastudy.R
-import com.example.senlastudy.database.MovieDatabaseHelper
 import com.example.senlastudy.databinding.FragmentMovieDetailBinding
 import com.example.senlastudy.fragments.BaseFragment
 import com.example.senlastudy.presenter.DetailMoviePresenter
 import com.example.senlastudy.presenter.MovieDetailContract
-import com.example.senlastudy.retrofit.pojo.TestMovie
+import com.example.senlastudy.retrofit.pojo.DetailsMovie
 
 
 class MovieDetailFragment :
@@ -25,6 +25,7 @@ class MovieDetailFragment :
     private var _binding: FragmentMovieDetailBinding? = null
     private val binding get() = _binding!!
     private var movie: Int? = null
+    var dialog: AlertDialog? = null
 
     companion object {
         const val MOVIE_EXTRA = "MOVIE_EXTRA"
@@ -47,11 +48,11 @@ class MovieDetailFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadMovie()
-        MovieDatabaseHelper(requireContext()).movieDatabaseHelper(requireContext())
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        dialog?.dismiss()
         _binding = null
     }
 
@@ -60,10 +61,10 @@ class MovieDetailFragment :
     }
 
     override fun createPresenter(): DetailMoviePresenter {
-        return DetailMoviePresenter()
+        return DetailMoviePresenter(movieDetailsDao = MovieApplication.movieDetailsDao)
     }
 
-    override fun setData(movie: TestMovie) {
+    override fun setData(movie: DetailsMovie) {
         binding.apply {
             movie.let {
                 Glide.with(requireContext()).load(it.image).centerCrop()
@@ -89,10 +90,13 @@ class MovieDetailFragment :
             activity?.onBackPressed()
             dialogs.dismiss()
         }
-        val dialog = builder.create()
-        dialog.show()
-        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.BLACK)
-        dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
+        dialog = builder.create()
+        dialog?.let {
+            it.show()
+            it.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+            it.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
+        }
+
     }
 
     override fun showViewLoading() {

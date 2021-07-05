@@ -3,8 +3,9 @@ package com.example.senlastudy.retrofit.pojo
 import android.provider.SyncStateContract
 import com.example.senlastudy.utils.Constants
 import com.google.gson.annotations.SerializedName
+import java.util.*
 
-data class TestMovie(
+data class DetailsMovie(
     @SerializedName("id")
     val id: Int,
     @SerializedName("title")
@@ -24,7 +25,8 @@ data class TestMovie(
     @SerializedName("vote_average")
     val voteAverage: String,
     @SerializedName("vote_count")
-    val voteCount: String
+    val voteCount: String,
+    val recordingTime:Date
 ) {
     val image get() = Constants.BASE_IMAGE_URL + backdropPath
 }

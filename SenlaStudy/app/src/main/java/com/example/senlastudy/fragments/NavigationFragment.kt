@@ -71,7 +71,7 @@ class NavigationFragment : Fragment() {
         } else {
             nowDisplayedFragment = createFragment(tag)
             if (nowDisplayedFragment != null) {
-                transaction.add(R.id.fragment_container_navigation, nowDisplayedFragment, tag)
+                transaction.replace(R.id.fragment_container_navigation, nowDisplayedFragment, tag)
                     .addToBackStack(null)
             }
         }

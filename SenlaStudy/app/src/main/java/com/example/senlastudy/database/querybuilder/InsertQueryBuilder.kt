@@ -1,4 +1,4 @@
-package com.example.senlastudy.database
+package com.example.senlastudy.database.querybuilder
 
 import java.util.*
 
@@ -13,7 +13,7 @@ class InsertQueryBuilder {
     }
 
     fun insertTextValue(nameField: String, argument: String): InsertQueryBuilder {
-        tableFieldsWithArgument[nameField] = argument
+        tableFieldsWithArgument[nameField] = "'$argument'"
         return this
     }
 
@@ -37,9 +37,13 @@ class InsertQueryBuilder {
         val whichValue = mutableListOf<String>()
 
         tableFieldsWithArgument.forEach {
+
+
             whichColumn.add("${it.key} ")
             whichValue.add(it.value)
         }
+
+        val sqlRequest = tableFieldsWithArgument.entries.joinToString()
 
         val firstPartRequest = whichColumn.joinToString(
             ",",

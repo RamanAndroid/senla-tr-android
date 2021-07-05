@@ -2,27 +2,47 @@ package com.example.senlastudy.presenter
 
 import android.util.Log
 import com.example.senlastudy.MovieApplication
-import com.example.senlastudy.database.MovieDatabaseHelper
-import com.example.senlastudy.retrofit.pojo.TestMovie
+import com.example.senlastudy.database.dao.moviedao.MovieDetailsDao
+import com.example.senlastudy.retrofit.pojo.DetailsMovie
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.ObservableOnSubscribe
 import io.reactivex.rxjava3.schedulers.Schedulers
+import java.util.*
 
 
-class DetailMoviePresenter : BasePresenter<MovieDetailContract.ViewMovieDetail>(),
+class DetailMoviePresenter(private val movieDetailsDao: MovieDetailsDao) :
+    BasePresenter<MovieDetailContract.ViewMovieDetail>(),
     MovieDetailContract.PresenterMovieDetail {
 
     override fun downloadingDetailsMovie(movieId: Int) {
-        val createObserver = Observable.create(ObservableOnSubscribe<TestMovie> { emitter ->
-            var movieTest = MovieDatabaseHelper.selectByFieldValue("movies", "id_movie", movieId)
+        val createObserver = Observable.create(ObservableOnSubscribe<DetailsMovie> { emitter ->
+            val movieTest = movieDetailsDao.findById(movieId.toString())
             if (movieTest != null) {
-                emitter.onNext(movieTest)
+                val pastTime = movieTest.recordingTime.time
+                val currentTime = Date().time
+                val seconds = (currentTime - pastTime)
+                if (seconds >= 259200) {
+                    val response = MovieApplication.apiService.getMovie(movieId).execute()
+                    val body = response.body()
+                    if (body == null || !response.isSuccessful) {
+                        emitter.onError(Throwable("The response from the server occurred with an error!"))
+                    } else {
+                        emitter.onNext(body)
+                        movieDetailsDao.put(body)
+                    }
+                } else {
+                    emitter.onNext(movieTest)
+                }
             } else {
                 val response = MovieApplication.apiService.getMovie(movieId).execute()
-                response.body()?.let { MovieDatabaseHelper.insertMovie(it) }
-                movieTest = MovieDatabaseHelper.selectByFieldValue("movies", "id_movie", movieId)
-                emitter.onNext(movieTest)
+                val body = response.body()
+                if (body == null || !response.isSuccessful) {
+                    emitter.onError(Throwable("The response from the server occurred with an error!"))
+                } else {
+                    emitter.onNext(body)
+                    movieDetailsDao.put(body)
+                }
             }
             emitter.onComplete()
         })
@@ -34,6 +54,7 @@ class DetailMoviePresenter : BasePresenter<MovieDetailContract.ViewMovieDetail>(
             .subscribe({ movieTest ->
                 getView().setData(movieTest)
             }, { t ->
+                Log.e("Presenter", "Failed retrieve movie datails ", t)
                 getView().errorResponse(t)
             })
     }

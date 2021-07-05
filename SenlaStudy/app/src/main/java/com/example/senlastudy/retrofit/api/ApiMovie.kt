@@ -2,7 +2,7 @@ package com.example.senlastudy.retrofit.api
 
 import com.example.senlastudy.retrofit.pojo.MovieListResponse
 import com.example.senlastudy.retrofit.pojo.MovieUpcomingListResponse
-import com.example.senlastudy.retrofit.pojo.TestMovie
+import com.example.senlastudy.retrofit.pojo.DetailsMovie
 import io.reactivex.rxjava3.core.Observable
 import retrofit2.Call
 import retrofit2.http.GET
@@ -34,6 +34,6 @@ interface ApiMovie {
     @GET("movie/{movie_id}")
     fun getMovie(
         @Path("movie_id") movieId: Int
-    ): Call<TestMovie>
+    ): Call<DetailsMovie>
 }
 

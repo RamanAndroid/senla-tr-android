@@ -1,4 +1,4 @@
-package com.example.senlastudy.database
+package com.example.senlastudy.database.querybuilder
 
 class CreateQueryBuilder {
 
@@ -68,7 +68,7 @@ class CreateQueryBuilder {
 
         return requestForCreateDatabaseColumn.joinToString(
             ",",
-            "CREATE TABLE if not EXISTS ${tableName[0]} (",
+            "CREATE TABLE IF NOT EXISTS ${tableName[0]} (",
             ")"
         )
     }

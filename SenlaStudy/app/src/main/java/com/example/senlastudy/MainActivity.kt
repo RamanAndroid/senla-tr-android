@@ -1,5 +1,6 @@
 package com.example.senlastudy
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
@@ -28,11 +29,10 @@ class MainActivity : AppCompatActivity(), BaseMovieListFragment.Navigator {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
-        if (savedInstanceState == null) {
-            val fragmentTransaction = supportFragmentManager.beginTransaction()
-            fragmentTransaction.add(R.id.fragment_container, navigationFragment)
-            fragmentTransaction.commit()
-        }
+
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.add(R.id.fragment_container, navigationFragment)
+        fragmentTransaction.commit()
     }
 
     override fun openMovieDetail(movie: Movie) {
@@ -41,12 +41,17 @@ class MainActivity : AppCompatActivity(), BaseMovieListFragment.Navigator {
         val bundle = Bundle()
         bundle.putInt(MovieDetailFragment.MOVIE_EXTRA, movie.id)
         movieDetailFragment.arguments = bundle
-        transaction.replace(R.id.fragment_container, movieDetailFragment)
-            .addToBackStack(null)
-            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-            .commit()
+        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            transaction.replace(R.id.fragment_container, movieDetailFragment)
+                .addToBackStack(null)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .commit()
+        } else {
+            transaction.replace(R.id.fragment_container_overview, movieDetailFragment)
+                .addToBackStack(null)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .commit()
+        }
     }
-
-
 }
 
