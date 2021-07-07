@@ -16,7 +16,6 @@ class MovieAdapter(private val listener: OnMovieClickListener): RecyclerView.Ada
 
     inner class MovieViewHolder(private val binding: RowMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
         init {
             binding.logoMovie.setOnClickListener {
 

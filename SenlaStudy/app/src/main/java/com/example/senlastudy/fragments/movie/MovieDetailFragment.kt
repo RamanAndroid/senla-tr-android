@@ -25,7 +25,7 @@ class MovieDetailFragment :
     private var _binding: FragmentMovieDetailBinding? = null
     private val binding get() = _binding!!
     private var movie: Int? = null
-    var dialog: AlertDialog? = null
+    private var dialog: AlertDialog? = null
 
     companion object {
         const val MOVIE_EXTRA = "MOVIE_EXTRA"
@@ -34,7 +34,7 @@ class MovieDetailFragment :
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentMovieDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -86,7 +86,7 @@ class MovieDetailFragment :
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Информация об данном фильме не смогла загрузиться!")
         builder.setCancelable(false)
-        builder.setPositiveButton("Окей") { dialogs, which ->
+        builder.setPositiveButton("Окей") { dialogs, _ ->
             activity?.onBackPressed()
             dialogs.dismiss()
         }
@@ -96,7 +96,6 @@ class MovieDetailFragment :
             it.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.BLACK)
             it.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
         }
-
     }
 
     override fun showViewLoading() {

@@ -28,6 +28,4 @@ abstract class BasePresenter<View : MainContract.View> : MainContract.Presenter<
     protected fun getCompositeDisposable(): CompositeDisposable {
         return disposable ?: error("CompositeDisposable is not created")
     }
-
-
 }

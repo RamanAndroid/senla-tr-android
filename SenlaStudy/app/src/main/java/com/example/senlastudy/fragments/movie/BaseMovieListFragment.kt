@@ -60,7 +60,6 @@ abstract class BaseMovieListFragment :
                     getMovie()
                 }
             }
-
         })
     }
 
