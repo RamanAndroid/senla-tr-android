@@ -3,6 +3,7 @@ package com.example.senlastudy
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.example.senlastudy.adapter.MovieFragmentPagerAdapter
 import com.example.senlastudy.databinding.ActivityMainBinding
@@ -21,18 +22,29 @@ class MainActivity : AppCompatActivity(), BaseMovieListFragment.Navigator {
         )
     }
 
-    private val movieDetailFragment = MovieDetailFragment()
-    private val navigationFragment = NavigationFragment()
+    companion object {
+        private const val tagDetail = "DETAIL_FRAGMENT"
+        private const val tagNavigation = "NAVIGATION_FRAGMENT"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
+        replaceFragment(tagNavigation)
 
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.add(R.id.fragment_container, navigationFragment)
-        fragmentTransaction.commit()
+        val fragmentManager = supportFragmentManager
+        val transaction = fragmentManager.beginTransaction()
+
+        val detailFragment = fragmentManager.findFragmentByTag(tagDetail)
+        if (detailFragment != null) {
+            if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                transaction.replace(R.id.fragment_container, detailFragment)
+            } else {
+                transaction.replace(R.id.fragment_container_overview, detailFragment)
+            }
+        }
     }
 
     override fun openMovieDetail(movie: Movie) {
@@ -40,18 +52,57 @@ class MainActivity : AppCompatActivity(), BaseMovieListFragment.Navigator {
         val transaction = fragmentManager.beginTransaction()
         val bundle = Bundle()
         bundle.putInt(MovieDetailFragment.MOVIE_EXTRA, movie.id)
-        movieDetailFragment.arguments = bundle
-        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            transaction.replace(R.id.fragment_container, movieDetailFragment)
-                .addToBackStack(null)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .commit()
+        var detailFragment = fragmentManager.findFragmentByTag(tagDetail)
+        if (detailFragment != null) {
+            if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                transaction.replace(R.id.fragment_container, detailFragment)
+            } else {
+                transaction.replace(R.id.fragment_container_overview, detailFragment)
+            }
         } else {
-            transaction.replace(R.id.fragment_container_overview, movieDetailFragment)
-                .addToBackStack(null)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .commit()
+            detailFragment = createFragment(tagDetail) as MovieDetailFragment
+            if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                transaction.replace(R.id.fragment_container, detailFragment).addToBackStack(null)
+            } else {
+                transaction.replace(R.id.fragment_container_overview, detailFragment)
+                    .addToBackStack(null)
+            }
+
         }
+
+        detailFragment.arguments = bundle
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
+
+    }
+
+    private fun replaceFragment(tag: String) {
+        val fragmentManager = supportFragmentManager
+        val transaction = fragmentManager.beginTransaction()
+        var nowDisplayedFragment = fragmentManager.findFragmentByTag(tag)
+        if (nowDisplayedFragment != null) {
+            transaction.replace(R.id.fragment_container, nowDisplayedFragment)
+        } else {
+            nowDisplayedFragment = createFragment(tag)
+            if (nowDisplayedFragment != null) {
+                transaction.replace(R.id.fragment_container, nowDisplayedFragment, tag)
+                    .addToBackStack(null)
+            }
+        }
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
+    }
+
+    private fun createFragment(tag: String): Fragment? {
+        return when (tag) {
+            tagDetail -> {
+                MovieDetailFragment()
+            }
+            tagNavigation -> {
+                NavigationFragment()
+            }
+
+            else -> null
+        }
+
     }
 }
 
