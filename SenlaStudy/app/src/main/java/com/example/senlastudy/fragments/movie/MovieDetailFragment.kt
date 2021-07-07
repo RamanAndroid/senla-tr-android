@@ -36,13 +36,13 @@ class MovieDetailFragment :
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentMovieDetailBinding.inflate(inflater, container, false)
-        setHasOptionsMenu(true)
         return binding.root
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         movie = arguments?.getInt(MOVIE_EXTRA) ?: error("cannot find movie id")
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

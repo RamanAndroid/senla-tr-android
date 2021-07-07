@@ -17,12 +17,15 @@ abstract class BasePresenter<View : MainContract.View> : MainContract.Presenter<
         this.view = null
     }
 
-
-    protected fun getView(): View {
-        return view ?: error("Presenter is not attached")
+    protected fun isViewAttached(): Boolean {
+        return view != null
     }
 
-    protected fun getCompositeDisposable():CompositeDisposable{
+    protected fun getView(): View {
+        return view ?: error("View is not attached")
+    }
+
+    protected fun getCompositeDisposable(): CompositeDisposable {
         return disposable ?: error("CompositeDisposable is not created")
     }
 

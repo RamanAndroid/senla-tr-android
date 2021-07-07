@@ -19,10 +19,10 @@ class NavigationFragment : Fragment() {
     private val binding get() = _binding!!
 
     companion object {
-        private const val tagNowPlaying = "MOVIE_NOW_PLAYING"
-        private const val tagPopular = "MOVIE_POPULAR"
-        private const val tagTopRated = "MOVIE_TOP_RATED"
-        private const val tagUpcoming = "MOVIE_UPCOMING"
+        private const val TAG_NOW_PLAYING = "MOVIE_NOW_PLAYING"
+        private const val TAG_POPULAR = "MOVIE_POPULAR"
+        private const val TAG_TOP_RATED = "MOVIE_TOP_RATED"
+        private const val TAG_UP_COMING = "MOVIE_UPCOMING"
     }
 
     override fun onCreateView(
@@ -35,21 +35,21 @@ class NavigationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        replaceFragment(tagPopular)
+        replaceFragment(TAG_POPULAR)
         binding.apply {
             bottomNavigation.setOnNavigationItemSelectedListener { item ->
                 when (item.itemId) {
                     R.id.action_now_playing -> {
-                        replaceFragment(tagNowPlaying)
+                        replaceFragment(TAG_NOW_PLAYING)
                     }
                     R.id.action_top_rated -> {
-                        replaceFragment(tagTopRated)
+                        replaceFragment(TAG_TOP_RATED)
                     }
                     R.id.action_upcoming -> {
-                        replaceFragment(tagUpcoming)
+                        replaceFragment(TAG_UP_COMING)
                     }
                     R.id.action_popular -> {
-                        replaceFragment(tagPopular)
+                        replaceFragment(TAG_POPULAR)
                     }
                 }
                 true
@@ -80,16 +80,16 @@ class NavigationFragment : Fragment() {
 
     private fun createFragment(tag: String): Fragment? {
         return when (tag) {
-            tagNowPlaying -> {
+            TAG_NOW_PLAYING -> {
                 MovieNowPlayingFragment()
             }
-            tagPopular -> {
+            TAG_POPULAR -> {
                 MoviePopularListFragment()
             }
-            tagUpcoming -> {
+            TAG_UP_COMING -> {
                 MovieUpcomingFragment()
             }
-            tagTopRated -> {
+            TAG_TOP_RATED -> {
                 MovieTopRatedFragment()
             }
             else -> null

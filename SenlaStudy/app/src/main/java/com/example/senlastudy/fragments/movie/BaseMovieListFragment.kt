@@ -47,10 +47,6 @@ abstract class BaseMovieListFragment :
         getMovie()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     private fun initializationAttributes() {
         binding.rvMovieList.adapter = adapter
         binding.rvMovieList.setHasFixedSize(true)
@@ -95,7 +91,7 @@ abstract class BaseMovieListFragment :
 
     override fun onMovieClick(movie: Movie) {
         val activity = (context as Navigator)
-        activity.openMovieDetail(movie)
+        activity.openMovieDetail(movie.id)
     }
 
     private fun getPage(): Int {
@@ -109,7 +105,7 @@ abstract class BaseMovieListFragment :
     }
 
     interface Navigator {
-        fun openMovieDetail(movie: Movie)
+        fun openMovieDetail(movieId: Int)
     }
 
 }

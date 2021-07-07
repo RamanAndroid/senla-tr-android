@@ -49,13 +49,25 @@ class DetailMoviePresenter(private val movieDetailsDao: MovieDetailsDao) :
 
         createObserver.observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
-            .doOnSubscribe { getView().showViewLoading() }
-            .doFinally { getView().hideViewLoading() }
+            .doOnSubscribe {
+                if (isViewAttached()) {
+                    getView().showViewLoading()
+                }
+            }
+            .doFinally {
+                if (isViewAttached()) {
+                    getView().hideViewLoading()
+                }
+            }
             .subscribe({ movieTest ->
-                getView().setData(movieTest)
+                if (isViewAttached()) {
+                    getView().setData(movieTest)
+                }
             }, { t ->
-                Log.e("Presenter", "Failed retrieve movie datails ", t)
-                getView().errorResponse(t)
+                if (isViewAttached()) {
+                    Log.e("Presenter", "Failed retrieve movie datails ", t)
+                    getView().errorResponse(t)
+                }
             })
     }
 }

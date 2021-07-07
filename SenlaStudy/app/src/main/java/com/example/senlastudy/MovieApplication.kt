@@ -3,7 +3,6 @@ package com.example.senlastudy
 import android.app.Application
 import com.example.senlastudy.database.MovieDatabaseHelper
 import com.example.senlastudy.database.dao.moviedao.MovieDetails
-import com.example.senlastudy.database.dao.moviedao.MovieShort
 import com.example.senlastudy.retrofit.api.ApiMovie
 import com.example.senlastudy.utils.Constants
 import com.google.gson.GsonBuilder
@@ -35,8 +34,6 @@ class MovieApplication : Application() {
         lateinit var movieDetailsDao: MovieDetails
             private set
 
-        lateinit var movieShortDao: MovieShort
-            private set
     }
 
     override fun onCreate() {
@@ -46,7 +43,6 @@ class MovieApplication : Application() {
         createOkHttpClient()
         createApiService()
         createMovieDetails()
-        createMovieShort()
         movieDatabaseHelper()
     }
 
@@ -105,17 +101,13 @@ class MovieApplication : Application() {
     }
 
     private fun movieDatabaseHelper() {
-        movieDatabaseHelper = MovieDatabaseHelper(this, listOf(movieDetailsDao, movieShortDao)).apply {
+        movieDatabaseHelper = MovieDatabaseHelper(this, listOf(movieDetailsDao)).apply {
             writableDatabase
         }
     }
 
     private fun createMovieDetails() {
         movieDetailsDao = MovieDetails()
-    }
-
-    private fun createMovieShort() {
-        movieShortDao = MovieShort()
     }
 
 }
