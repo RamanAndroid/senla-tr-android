@@ -61,7 +61,10 @@ class MovieDetailFragment :
     }
 
     override fun createPresenter(): DetailMoviePresenter {
-        return DetailMoviePresenter(movieDetailsDao = MovieApplication.movieDetailsDao)
+        return DetailMoviePresenter(
+            movieDetailsDao = MovieApplication.movieDetailsDao,
+            apiService = MovieApplication.apiService
+        )
     }
 
     override fun setData(movie: DetailsMovie) {

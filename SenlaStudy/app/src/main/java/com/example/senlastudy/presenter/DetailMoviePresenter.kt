@@ -1,8 +1,8 @@
 package com.example.senlastudy.presenter
 
 import android.util.Log
-import com.example.senlastudy.MovieApplication
 import com.example.senlastudy.database.dao.moviedao.MovieDetailsDao
+import com.example.senlastudy.retrofit.api.ApiMovie
 import com.example.senlastudy.retrofit.pojo.DetailsMovie
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
@@ -11,7 +11,10 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.*
 
 
-class DetailMoviePresenter(private val movieDetailsDao: MovieDetailsDao) :
+class DetailMoviePresenter(
+    private val movieDetailsDao: MovieDetailsDao,
+    private val apiService: ApiMovie
+) :
     BasePresenter<MovieDetailContract.ViewMovieDetail>(),
     MovieDetailContract.PresenterMovieDetail {
 
@@ -23,19 +26,19 @@ class DetailMoviePresenter(private val movieDetailsDao: MovieDetailsDao) :
                 val currentTime = Date().time
                 val seconds = (currentTime - pastTime)
                 if (seconds >= 259200) {
-                    val response = MovieApplication.apiService.getMovie(movieId).execute()
+                    val response = apiService.getMovie(movieId).execute()
                     val body = response.body()
                     if (body == null || !response.isSuccessful) {
                         emitter.onError(Throwable("The response from the server occurred with an error!"))
                     } else {
                         emitter.onNext(body)
-                        movieDetailsDao.put(body)
+                        movieDetailsDao.update(body)
                     }
                 } else {
                     emitter.onNext(movieTest)
                 }
             } else {
-                val response = MovieApplication.apiService.getMovie(movieId).execute()
+                val response = apiService.getMovie(movieId).execute()
                 val body = response.body()
                 if (body == null || !response.isSuccessful) {
                     emitter.onError(Throwable("The response from the server occurred with an error!"))

@@ -130,6 +130,43 @@ class MovieDetails : BaseDao(), MovieDetailsDao {
         }
     }
 
+    override fun update(movie: DetailsMovie) {
+        if (db != null) {
+            db?.let {
+                val currentDate = Date()
+                val dateText: String = MovieDatabaseHelper.dateFormat.format(currentDate)
+                val sqlInsert =
+                    "UPDATE $DATABASE_TABLE_MOVIES SET $ID_MOVIE = ?," +
+                            "$TITLE = ?,$RELEASE_DATE = ?,$ORIGINAL_TITLE = ?," +
+                            "$ORIGINAL_LANGUAGE = ?,$BACKDROP_PATH = ?," +
+                            "$OVERVIEW = ?,$POPULARITY = ?,$VOTE_AVERAGE = ?, $VOTE_COUNT = ?, $RECORDING_TIME = ? WHERE $ID_MOVIE = ?"
+
+                it.beginTransaction()
+                try {
+                    val sqlStatement = it.compileStatement(sqlInsert)
+                    sqlStatement.bindString(1, movie.id.toString())
+                    sqlStatement.bindString(2, movie.title)
+                    sqlStatement.bindString(3, movie.releaseDate)
+                    sqlStatement.bindString(4, movie.originalTitle)
+                    sqlStatement.bindString(5, movie.originalLanguage)
+                    sqlStatement.bindString(6, movie.backdropPath)
+                    sqlStatement.bindString(7, movie.overview)
+                    sqlStatement.bindString(8, movie.popularity)
+                    sqlStatement.bindString(9, movie.voteAverage)
+                    sqlStatement.bindString(10, movie.voteCount)
+                    sqlStatement.bindString(11, dateText)
+                    sqlStatement.bindString(12, movie.id.toString())
+                    it.setTransactionSuccessful()
+                    sqlStatement.executeUpdateDelete()
+                } finally {
+                    it.endTransaction()
+                }
+            }
+        } else {
+            error("SQLiteDatabase was not created")
+        }
+    }
+
     override fun create() {
         if (db != null) {
             db?.execSQL(

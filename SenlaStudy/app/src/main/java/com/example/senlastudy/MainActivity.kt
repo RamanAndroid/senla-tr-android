@@ -1,17 +1,26 @@
 package com.example.senlastudy
 
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
 import android.content.res.Configuration
 import android.os.Bundle
+import android.os.IBinder
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.example.senlastudy.databinding.ActivityMainBinding
 import com.example.senlastudy.fragments.NavigationFragment
 import com.example.senlastudy.fragments.movie.BaseMovieListFragment
 import com.example.senlastudy.fragments.movie.MovieDetailFragment
+import com.example.senlastudy.service.InternetStateService
+import com.example.senlastudy.service.Observer
 
 
-class MainActivity : AppCompatActivity(), BaseMovieListFragment.Navigator {
+class MainActivity : AppCompatActivity(), BaseMovieListFragment.Navigator,Observer{
 
     private lateinit var binding: ActivityMainBinding
 
@@ -22,6 +31,8 @@ class MainActivity : AppCompatActivity(), BaseMovieListFragment.Navigator {
     }
 
     private var movieId: Int = 0
+    private var myService: InternetStateService? = null
+    private var isBound = false
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -33,6 +44,10 @@ class MainActivity : AppCompatActivity(), BaseMovieListFragment.Navigator {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
+
+        val intent = Intent(this, InternetStateService::class.java)
+        bindService(intent, connectBoundService, Context.BIND_AUTO_CREATE)
+
         if (savedInstanceState != null) {
             replaceDetailFragment(savedInstanceState.getInt(TAG_MOVIE_ID))
         } else {
@@ -118,6 +133,35 @@ class MainActivity : AppCompatActivity(), BaseMovieListFragment.Navigator {
             }
             else -> error("Unexpected tag $tag")
         }
-
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unbindService(connectBoundService)
+    }
+
+    private val connectBoundService = object : ServiceConnection {
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            val binder = service as InternetStateService.ServiceBinder
+            myService = binder.getService()
+            isBound = true
+        }
+
+        override fun onServiceDisconnected(name: ComponentName) {
+            isBound = false
+        }
+    }
+
+    override fun update() {
+        Log.d("UPDATE FIELD","")
+        if (boolean){
+            binding.yesInternet?.isVisible = true
+            binding.noInternet?.isVisible = false
+        }else{
+            binding.noInternet?.isVisible = true
+            binding.yesInternet?.isVisible = false
+        }
+    }
+
+
 }

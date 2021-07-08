@@ -28,7 +28,6 @@ abstract class BaseMovieListFragment :
     MovieListContract.ViewMovieList,
     MovieAdapter.OnMovieClickListener {
 
-    private var page = 1
     private var _binding: FragmentMovieListBinding? = null
     private val binding get() = _binding!!
     private val adapter: MovieAdapter by lazy { MovieAdapter(this) }
@@ -56,7 +55,6 @@ abstract class BaseMovieListFragment :
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1)) {
-                    page++
                     getMovie()
                 }
             }
@@ -93,14 +91,8 @@ abstract class BaseMovieListFragment :
         activity.openMovieDetail(movie.id)
     }
 
-    private fun getPage(): Int {
-        return page
-    }
-
     private fun getMovie() {
-        getPresenter().downloadingMovieList(
-            getPage()
-        )
+        getPresenter().downloadingMovieList()
     }
 
     interface Navigator {

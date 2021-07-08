@@ -6,4 +6,5 @@ import com.example.senlastudy.retrofit.pojo.DetailsMovie
 interface MovieDetailsDao : Dao {
     fun findById(id: String): DetailsMovie?
     fun put(movie: DetailsMovie)
+    fun update(movie: DetailsMovie)
 }

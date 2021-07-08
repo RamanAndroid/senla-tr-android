@@ -9,7 +9,7 @@ interface MovieListContract {
     }
 
     interface PresenterMovieList: MainContract.Presenter<ViewMovieList> {
-        fun downloadingMovieList(page:Int)
+        fun downloadingMovieList()
     }
 
 }
