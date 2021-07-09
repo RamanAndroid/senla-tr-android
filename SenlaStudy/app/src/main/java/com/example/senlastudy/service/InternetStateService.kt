@@ -10,22 +10,18 @@ import android.net.NetworkCapabilities
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
+import com.example.senlastudy.MovieApplication
 
 
-class InternetStateService : Service(), Observable {
+class InternetStateService : Service() {
 
-    override val observers: ArrayList<Observer> = ArrayList()
     private val serviceBinder = ServiceBinder()
-
     private var isConnected = false
-        set(value) {
-            field = value
-            sendUpdateEvent()
-        }
 
     private val receiverStateInternet = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             isConnected = isConnectedToInternet(context)
+            MovieApplication.internetStateStation.updateData(isConnected)
         }
     }
 

@@ -103,7 +103,6 @@ class MovieDetailFragment :
 
     override fun showViewLoading() {
         binding.downloadMovie.isVisible = true
-
     }
 
     override fun hideViewLoading() {

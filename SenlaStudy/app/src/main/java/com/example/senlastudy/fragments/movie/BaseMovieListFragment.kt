@@ -19,7 +19,7 @@ import com.example.senlastudy.retrofit.pojo.Movie
 Данный класс занимается инициализацией Layout на который выводится информация
 setData - заносит данные  в RecyclerVIew
 errorResponse -  выводит информацию об неудачной загрузки данных
-onMOvieClick - открывает Fragment с полной информацией об Фильме
+onMovieClick - открывает Fragment с полной информацией об Фильме
 getPage - возвращает текущий номер страницы
 getMovie - кидает запрос на скачивание новой страницы с фильмами
  */
