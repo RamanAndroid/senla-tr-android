@@ -56,7 +56,6 @@ class MovieAdapter(private val listener: OnMovieClickListener): RecyclerView.Ada
     override fun getItemCount(): Int = movie.size
 
     fun setData(movie: List<Movie>) {
-
         this.movie += movie
     }
 

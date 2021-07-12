@@ -10,18 +10,18 @@ import android.net.NetworkCapabilities
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
-import com.example.senlastudy.MovieApplication
 
 
 class InternetStateService : Service() {
 
     private val serviceBinder = ServiceBinder()
     private var isConnected = false
+    private lateinit var observerStation: ObserverStation
 
     private val receiverStateInternet = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             isConnected = isConnectedToInternet(context)
-            MovieApplication.internetStateStation.updateData(isConnected)
+            observerStation.updateData(isConnected)
         }
     }
 
@@ -37,6 +37,7 @@ class InternetStateService : Service() {
 
     override fun onCreate() {
         super.onCreate()
+        createObserverStation()
         val intentFilter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
         registerReceiver(receiverStateInternet, intentFilter)
     }
@@ -74,5 +75,13 @@ class InternetStateService : Service() {
             }
         }
         return result
+    }
+
+    fun getObserverStation(): ObserverStation {
+        return observerStation
+    }
+
+    private fun createObserverStation() {
+        observerStation = ObserverStation()
     }
 }

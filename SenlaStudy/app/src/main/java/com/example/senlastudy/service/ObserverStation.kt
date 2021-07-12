@@ -2,19 +2,19 @@ package com.example.senlastudy.service
 
 import android.util.Log
 
-data class InternetStateStation(
+data class ObserverStation(
     private val subscribers: ArrayList<ILiveData.InternetStateSubscriber> = arrayListOf(),
 ) : ILiveData.Publisher {
 
     private var internetState: Boolean = false
         set(value) {
             field = value
-            Log.d("INTERNET STATE", internetState.toString())
             this.notifySubscribers()
         }
 
     override fun register(subscriber: ILiveData.InternetStateSubscriber) {
         subscribers.add(subscriber)
+        subscriber.update(internetState)
     }
 
     override fun remove(subscriber: ILiveData.InternetStateSubscriber) {

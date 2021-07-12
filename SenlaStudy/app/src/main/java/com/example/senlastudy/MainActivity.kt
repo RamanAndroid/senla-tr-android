@@ -8,7 +8,6 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.os.IBinder
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.example.senlastudy.databinding.ActivityMainBinding
@@ -30,12 +29,12 @@ class MainActivity : AppCompatActivity(), BaseMovieListFragment.Navigator {
     }
 
     private var movieId: Int = 0
-    private var myService: InternetStateService? = null
+    private lateinit var internetStateService: InternetStateService
     private var isBound = false
 
     private val subscriberMainActivity = object : ILiveData.InternetStateSubscriber {
         override fun update(internetState: Boolean) {
-            internetState(internetState)
+            changeViewInternetState(internetState)
         }
     }
 
@@ -44,19 +43,11 @@ class MainActivity : AppCompatActivity(), BaseMovieListFragment.Navigator {
         outState.putInt(TAG_MOVIE_ID, movieId)
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
-
-        val intent = Intent(this, InternetStateService::class.java)
-        bindService(intent, connectBoundService, Context.BIND_AUTO_CREATE)
 
         if (savedInstanceState != null) {
             movieId = savedInstanceState.getInt(TAG_MOVIE_ID)
@@ -64,22 +55,21 @@ class MainActivity : AppCompatActivity(), BaseMovieListFragment.Navigator {
         } else {
             replaceNavigationFragment()
         }
-
     }
 
     override fun onResume() {
         super.onResume()
-        MovieApplication.internetStateStation.register(subscriberMainActivity)
+        val intent = Intent(this, InternetStateService::class.java)
+        bindService(intent, connectBoundService, Context.BIND_AUTO_CREATE)
     }
 
     override fun onPause() {
         super.onPause()
-        MovieApplication.internetStateStation.remove(subscriberMainActivity)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        unbindService(connectBoundService)
+        internetStateService.getObserverStation().remove(subscriberMainActivity)
+        if (isBound) {
+            unbindService(connectBoundService)
+            isBound = false
+        }
     }
 
     override fun openMovieDetail(movieId: Int) {
@@ -165,22 +155,21 @@ class MainActivity : AppCompatActivity(), BaseMovieListFragment.Navigator {
     private val connectBoundService = object : ServiceConnection {
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
             val binder = service as InternetStateService.ServiceBinder
-            myService = binder.getService()
+            internetStateService = binder.getService()
             isBound = true
+            internetStateService.getObserverStation().register(subscriberMainActivity)
         }
-
         override fun onServiceDisconnected(name: ComponentName) {
             isBound = false
+            internetStateService.getObserverStation().remove(subscriberMainActivity)
         }
     }
 
-    private fun internetState(internetState: Boolean) {
-        if (internetState) {
-            binding.yesInternet.isVisible = true
-            binding.noInternet.isVisible = false
-        } else {
-            binding.noInternet.isVisible = true
-            binding.yesInternet.isVisible = false
+    private fun changeViewInternetState(internetState: Boolean) {
+        binding.internetStateView.isSelected = true
+        if (isBound) {
+            binding.internetStateView.isSelected = false
+            binding.internetStateView.isEnabled = internetState
         }
     }
 
