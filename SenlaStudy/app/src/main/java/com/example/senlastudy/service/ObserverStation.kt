@@ -1,10 +1,8 @@
 package com.example.senlastudy.service
 
-import android.util.Log
-
 data class ObserverStation(
-    private val subscribers: ArrayList<ILiveData.InternetStateSubscriber> = arrayListOf(),
-) : ILiveData.Publisher {
+    private val subscribers: ArrayList<IObserver.InternetStateSubscriber> = arrayListOf(),
+) : IObserver.Publisher {
 
     private var internetState: Boolean = false
         set(value) {
@@ -12,12 +10,12 @@ data class ObserverStation(
             this.notifySubscribers()
         }
 
-    override fun register(subscriber: ILiveData.InternetStateSubscriber) {
+    override fun register(subscriber: IObserver.InternetStateSubscriber) {
         subscribers.add(subscriber)
         subscriber.update(internetState)
     }
 
-    override fun remove(subscriber: ILiveData.InternetStateSubscriber) {
+    override fun remove(subscriber: IObserver.InternetStateSubscriber) {
         subscribers.remove(subscriber)
     }
 

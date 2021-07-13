@@ -1,13 +1,12 @@
-package com.example.senlastudy.presenter.rated
+package com.example.senlastudy.presenter.movie.popular
 
 import com.example.senlastudy.presenter.BasePresenter
-import com.example.senlastudy.presenter.MovieListContract
+import com.example.senlastudy.presenter.movie.MovieListContract
 import com.example.senlastudy.retrofit.api.ApiMovie
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-
-class TopRatedPresenter(private val apiService: ApiMovie) :
+class PopularPresenter(private val apiService: ApiMovie) :
     BasePresenter<MovieListContract.ViewMovieList>(),
     MovieListContract.PresenterMovieList {
 
@@ -19,15 +18,15 @@ class TopRatedPresenter(private val apiService: ApiMovie) :
             isLoading = true
             getView().showViewLoading()
             getCompositeDisposable().add(
-                apiService.getTopRatedMovie(page)
+                apiService.getPopularMovie(page)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
                     .subscribe(
                         { response ->
-                            isLoading = false
                             page++
-                            getView().setData(response.results)
+                            isLoading = false
                             getView().hideViewLoading()
+                            getView().setData(response.results)
                         },
                         { t ->
                             isLoading = false

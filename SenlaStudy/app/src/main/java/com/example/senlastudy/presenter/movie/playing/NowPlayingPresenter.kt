@@ -1,12 +1,14 @@
-package com.example.senlastudy.presenter.upcoming
+package com.example.senlastudy.presenter.movie.playing
 
+
+import com.example.senlastudy.MovieApplication
 import com.example.senlastudy.presenter.BasePresenter
-import com.example.senlastudy.presenter.MovieListContract
+import com.example.senlastudy.presenter.movie.MovieListContract
 import com.example.senlastudy.retrofit.api.ApiMovie
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-class UpcomingPresenter(private val apiService: ApiMovie) :
+class NowPlayingPresenter(private val apiService: ApiMovie) :
     BasePresenter<MovieListContract.ViewMovieList>(),
     MovieListContract.PresenterMovieList {
 
@@ -18,13 +20,13 @@ class UpcomingPresenter(private val apiService: ApiMovie) :
             isLoading = true
             getView().showViewLoading()
             getCompositeDisposable().add(
-                apiService.getUpcomingMovie(page)
+                MovieApplication.apiService.getNowPlayingMovie(page)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
                     .subscribe(
                         { response ->
-                            page++
                             isLoading = false
+                            page++
                             getView().setData(response.results)
                             getView().hideViewLoading()
                         },

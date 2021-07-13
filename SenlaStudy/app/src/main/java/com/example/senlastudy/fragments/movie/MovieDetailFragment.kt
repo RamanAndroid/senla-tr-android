@@ -14,12 +14,12 @@ import com.example.senlastudy.MovieApplication
 import com.example.senlastudy.R
 import com.example.senlastudy.databinding.FragmentMovieDetailBinding
 import com.example.senlastudy.fragments.BaseFragment
-import com.example.senlastudy.presenter.DetailMoviePresenter
-import com.example.senlastudy.presenter.MovieDetailContract
+import com.example.senlastudy.presenter.movie.DetailMoviePresenter
+import com.example.senlastudy.presenter.movie.MovieDetailContract
 import com.example.senlastudy.retrofit.pojo.DetailsMovie
 
 
-class MovieDetailFragment :
+class  MovieDetailFragment :
     BaseFragment<MovieDetailContract.PresenterMovieDetail, MovieDetailContract.ViewMovieDetail>(),
     MovieDetailContract.ViewMovieDetail {
     private var _binding: FragmentMovieDetailBinding? = null

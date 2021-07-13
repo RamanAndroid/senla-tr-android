@@ -7,14 +7,16 @@ import android.content.ServiceConnection
 import android.content.res.Configuration
 import android.os.Bundle
 import android.os.IBinder
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.Lifecycle
 import com.example.senlastudy.databinding.ActivityMainBinding
-import com.example.senlastudy.fragments.NavigationFragment
+import com.example.senlastudy.fragments.movie.NavigationFragment
 import com.example.senlastudy.fragments.movie.BaseMovieListFragment
 import com.example.senlastudy.fragments.movie.MovieDetailFragment
-import com.example.senlastudy.service.ILiveData
+import com.example.senlastudy.service.IObserver
 import com.example.senlastudy.service.InternetStateService
 
 
@@ -29,12 +31,12 @@ class MainActivity : AppCompatActivity(), BaseMovieListFragment.Navigator {
     }
 
     private var movieId: Int = 0
-    private lateinit var internetStateService: InternetStateService
+    private var internetStateService: InternetStateService? = null
     private var isBound = false
 
-    private val subscriberMainActivity = object : ILiveData.InternetStateSubscriber {
+    private val subscriberMainActivity = object : IObserver.InternetStateSubscriber {
         override fun update(internetState: Boolean) {
-            changeViewInternetState(internetState)
+            changeInternetStateView(internetState)
         }
     }
 
@@ -49,6 +51,10 @@ class MainActivity : AppCompatActivity(), BaseMovieListFragment.Navigator {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
+        binding.btnOpenShareActivity.setOnClickListener {
+            openShareActivity()
+        }
+
         if (savedInstanceState != null) {
             movieId = savedInstanceState.getInt(TAG_MOVIE_ID)
             replaceDetailFragment(movieId)
@@ -59,20 +65,21 @@ class MainActivity : AppCompatActivity(), BaseMovieListFragment.Navigator {
 
     override fun onResume() {
         super.onResume()
-        val intent = Intent(this, InternetStateService::class.java)
-        bindService(intent, connectBoundService, Context.BIND_AUTO_CREATE)
+        if (!isBound) {
+            val intent = Intent(this, InternetStateService::class.java)
+            bindService(intent, connectBoundService, Context.BIND_AUTO_CREATE)
+        }
     }
 
     override fun onPause() {
         super.onPause()
-        internetStateService.getObserverStation().remove(subscriberMainActivity)
+        internetStateService?.getObserverStation()?.remove(subscriberMainActivity)
         if (isBound) {
             unbindService(connectBoundService)
-            isBound = false
         }
     }
 
-    override fun openMovieDetail(movieId: Int) {
+    override fun openMovieDetailFragment(movieId: Int) {
         val fragmentManager = supportFragmentManager
         val transaction = fragmentManager.beginTransaction()
         val bundle = Bundle()
@@ -156,21 +163,37 @@ class MainActivity : AppCompatActivity(), BaseMovieListFragment.Navigator {
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
             val binder = service as InternetStateService.ServiceBinder
             internetStateService = binder.getService()
+            internetStateService?.getObserverStation()?.register(subscriberMainActivity)
             isBound = true
-            internetStateService.getObserverStation().register(subscriberMainActivity)
         }
+
         override fun onServiceDisconnected(name: ComponentName) {
+            internetStateService?.getObserverStation()?.remove(subscriberMainActivity)
             isBound = false
-            internetStateService.getObserverStation().remove(subscriberMainActivity)
+            reconnectToBoundService()
         }
     }
 
-    private fun changeViewInternetState(internetState: Boolean) {
-        binding.internetStateView.isSelected = true
+    private fun changeInternetStateView(internetState: Boolean = false) {
         if (isBound) {
-            binding.internetStateView.isSelected = false
+            binding.internetStateView.isSelected = true
             binding.internetStateView.isEnabled = internetState
+        } else {
+            binding.internetStateView.isSelected = false
         }
+    }
+
+    private fun reconnectToBoundService() {
+        if (lifecycle.currentState >= Lifecycle.State.RESUMED) {
+            val intent = Intent(this, InternetStateService::class.java)
+            bindService(intent, connectBoundService, Context.BIND_AUTO_CREATE)
+        }
+    }
+
+    private fun openShareActivity() {
+        Toast.makeText(this, "Открывается меню с вашими контактами", Toast.LENGTH_LONG).show()
+        val intent = Intent(this, ShareActivity::class.java)
+        startActivity(intent)
     }
 
 }

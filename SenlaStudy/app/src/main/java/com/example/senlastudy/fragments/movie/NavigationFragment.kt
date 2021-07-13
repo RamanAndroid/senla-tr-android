@@ -1,4 +1,4 @@
-package com.example.senlastudy.fragments
+package com.example.senlastudy.fragments.movie
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,10 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.example.senlastudy.R
 import com.example.senlastudy.databinding.FragmentNavigationBinding
-import com.example.senlastudy.fragments.movie.MovieNowPlayingFragment
-import com.example.senlastudy.fragments.movie.MoviePopularListFragment
-import com.example.senlastudy.fragments.movie.MovieTopRatedFragment
-import com.example.senlastudy.fragments.movie.MovieUpcomingFragment
 
 
 class NavigationFragment : Fragment() {
@@ -94,6 +90,5 @@ class NavigationFragment : Fragment() {
             }
             else -> null
         }
-
     }
 }

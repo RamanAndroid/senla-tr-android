@@ -1,6 +1,6 @@
 package com.example.senlastudy.service
 
-interface ILiveData{
+interface IObserver{
     interface Publisher{
         fun register(subscriber: InternetStateSubscriber)
         fun remove(subscriber: InternetStateSubscriber)

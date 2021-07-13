@@ -1,5 +1,6 @@
-package com.example.senlastudy.presenter
+package com.example.senlastudy.presenter.movie
 
+import com.example.senlastudy.presenter.MainContract
 import com.example.senlastudy.retrofit.pojo.DetailsMovie
 
 interface MovieDetailContract {

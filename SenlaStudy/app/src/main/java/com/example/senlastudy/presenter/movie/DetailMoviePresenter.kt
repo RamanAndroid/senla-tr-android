@@ -1,7 +1,8 @@
-package com.example.senlastudy.presenter
+package com.example.senlastudy.presenter.movie
 
 import android.util.Log
 import com.example.senlastudy.database.dao.moviedao.MovieDetailsDao
+import com.example.senlastudy.presenter.BasePresenter
 import com.example.senlastudy.retrofit.api.ApiMovie
 import com.example.senlastudy.retrofit.pojo.DetailsMovie
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers

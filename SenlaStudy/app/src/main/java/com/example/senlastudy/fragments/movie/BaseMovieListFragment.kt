@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.senlastudy.adapter.MovieAdapter
 import com.example.senlastudy.databinding.FragmentMovieListBinding
 import com.example.senlastudy.fragments.BaseFragment
-import com.example.senlastudy.presenter.MovieListContract
+import com.example.senlastudy.presenter.movie.MovieListContract
 import com.example.senlastudy.retrofit.pojo.Movie
 
 
@@ -88,7 +88,7 @@ abstract class BaseMovieListFragment :
 
     override fun onMovieClick(movie: Movie) {
         val activity = (context as Navigator)
-        activity.openMovieDetail(movie.id)
+        activity.openMovieDetailFragment(movie.id)
     }
 
     private fun getMovie() {
@@ -96,7 +96,7 @@ abstract class BaseMovieListFragment :
     }
 
     interface Navigator {
-        fun openMovieDetail(movieId: Int)
+        fun openMovieDetailFragment(movieId: Int)
     }
 
 }
