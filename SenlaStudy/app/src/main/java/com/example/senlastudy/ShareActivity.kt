@@ -1,9 +1,17 @@
 package com.example.senlastudy
 
+import android.Manifest
+import android.content.ContentResolver
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.provider.ContactsContract
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import com.example.senlastudy.database.entity.Contact
 import com.example.senlastudy.databinding.ActivityShareBinding
 import com.example.senlastudy.fragments.movie.MoviePopularListFragment
 import com.example.senlastudy.fragments.share.ContactFragment
@@ -22,6 +30,11 @@ class ShareActivity : AppCompatActivity() {
         binding = ActivityShareBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
+        binding.toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        binding.toolbar.setNavigationOnClickListener {
+            finish()
+        }
+
         replaceFragment(TAG_CONTACT)
     }
 
@@ -49,6 +62,6 @@ class ShareActivity : AppCompatActivity() {
             }
             else -> error("Unexpected tag $tag")
         }
-
     }
+
 }

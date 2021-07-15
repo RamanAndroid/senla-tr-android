@@ -1,5 +1,6 @@
 package com.example.senlastudy.database.dao.moviedao
 
+import android.content.ContentResolver
 import android.database.sqlite.SQLiteDatabase
 import com.example.senlastudy.database.MovieDatabaseHelper
 import com.example.senlastudy.database.dao.BaseDao

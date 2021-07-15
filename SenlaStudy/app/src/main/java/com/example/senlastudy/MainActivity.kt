@@ -57,7 +57,9 @@ class MainActivity : AppCompatActivity(), BaseMovieListFragment.Navigator {
 
         if (savedInstanceState != null) {
             movieId = savedInstanceState.getInt(TAG_MOVIE_ID)
-            replaceDetailFragment(movieId)
+            if (movieId > 0) {
+                replaceDetailFragment(movieId)
+            }
         } else {
             replaceNavigationFragment()
         }

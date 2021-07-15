@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.senlastudy.database.entity.Contact
 import com.example.senlastudy.databinding.FragmentContactBinding
 import com.example.senlastudy.fragments.BaseFragment
 import com.example.senlastudy.presenter.share.ContactListContract
@@ -35,7 +36,7 @@ class ContactFragment :
         return ContactListPresenter()
     }
 
-    override fun setData() {
+    override fun setData(contactList: List<Contact>) {
 
     }
 
