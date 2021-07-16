@@ -34,7 +34,6 @@ class ShareActivity : AppCompatActivity() {
         binding.toolbar.setNavigationOnClickListener {
             finish()
         }
-
         replaceFragment(TAG_CONTACT)
     }
 

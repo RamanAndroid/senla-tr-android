@@ -1,12 +1,12 @@
 package com.example.senlastudy.fragments.share
 
+import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,13 +27,16 @@ class ContactFragment :
     private val binding get() = _binding!!
     private val adapter: ContactAdapter by lazy { ContactAdapter(this) }
 
+    companion object {
+        private const val REQUEST_CODE_PERMISSION_READ_CONTACTS = 404
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentContactListBinding.inflate(inflater, container, false)
         initializationAttributes()
-        checkPermissionOfRead()
         return binding.root
     }
 
@@ -44,11 +47,35 @@ class ContactFragment :
             LinearLayoutManager(requireContext())
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        checkPermissionOfRead()
+        binding.requestPermission.setOnClickListener {
+            checkPermissionOfRead()
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            REQUEST_CODE_PERMISSION_READ_CONTACTS -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    binding.layoutNoPermission.isVisible = false
+                    getContact()
+                } else {
+                    binding.layoutNoPermission.isVisible = true
+                }
+            }
+        }
+    }
 
     override fun createPresenter(): ContactListContract.PresenterContactList {
         return ContactListPresenter(MovieApplication.movieContactsDaoImplDao)
@@ -87,24 +114,20 @@ class ContactFragment :
         ).show()
     }
 
-    private fun checkPermissionOfRead(): Boolean {
+    private fun checkPermissionOfRead() {
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
-                android.Manifest.permission.READ_CONTACTS
-            ) != PackageManager.PERMISSION_GRANTED
+                Manifest.permission.READ_CONTACTS
+            ) == PackageManager.PERMISSION_GRANTED
         ) {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(android.Manifest.permission.READ_CONTACTS),
-                0
-            )
-            return (ContextCompat.checkSelfPermission(
-                requireContext(),
-                android.Manifest.permission.READ_CONTACTS
-            ) != PackageManager.PERMISSION_GRANTED)
+            binding.layoutNoPermission.isVisible = false
+            getContact()
         } else {
-            return true
+            binding.layoutNoPermission.isVisible = true
+            requestPermissions(
+                arrayOf(Manifest.permission.READ_CONTACTS),
+                REQUEST_CODE_PERMISSION_READ_CONTACTS
+            )
         }
-
     }
 }
