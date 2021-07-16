@@ -2,7 +2,8 @@ package com.example.senlastudy
 
 import android.app.Application
 import com.example.senlastudy.database.MovieDatabaseHelper
-import com.example.senlastudy.database.dao.moviedao.MovieDetails
+import com.example.senlastudy.database.dao.contactdao.ContactsDaoImpl
+import com.example.senlastudy.database.dao.moviedao.MovieDetailsDaoImpl
 import com.example.senlastudy.retrofit.api.ApiMovie
 import com.example.senlastudy.utils.Constants
 import com.google.gson.GsonBuilder
@@ -31,7 +32,10 @@ class MovieApplication : Application() {
         lateinit var movieDatabaseHelper: MovieDatabaseHelper
             private set
 
-        lateinit var movieDetailsDao: MovieDetails
+        lateinit var movieDetailsDaoImplDao: MovieDetailsDaoImpl
+            private set
+
+        lateinit var movieContactsDaoImplDao: ContactsDaoImpl
             private set
     }
 
@@ -41,8 +45,9 @@ class MovieApplication : Application() {
         createGsonConverter()
         createOkHttpClient()
         createApiService()
-        createMovieDetails()
+        createMovieDetailsDao()
         movieDatabaseHelper()
+        createContactListDao()
     }
 
     private fun createApiService() {
@@ -100,13 +105,17 @@ class MovieApplication : Application() {
     }
 
     private fun movieDatabaseHelper() {
-        movieDatabaseHelper = MovieDatabaseHelper(this, listOf(movieDetailsDao)).apply {
+        movieDatabaseHelper = MovieDatabaseHelper(this, listOf(movieDetailsDaoImplDao)).apply {
             writableDatabase
         }
     }
 
-    private fun createMovieDetails() {
-        movieDetailsDao = MovieDetails()
+    private fun createMovieDetailsDao() {
+        movieDetailsDaoImplDao = MovieDetailsDaoImpl()
+    }
+
+    private fun createContactListDao() {
+        movieContactsDaoImplDao = ContactsDaoImpl(applicationContext.contentResolver)
     }
 
 }

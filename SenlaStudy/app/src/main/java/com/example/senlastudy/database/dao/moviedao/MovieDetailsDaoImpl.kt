@@ -8,7 +8,7 @@ import com.example.senlastudy.database.querybuilder.CreateQueryBuilder
 import com.example.senlastudy.retrofit.pojo.DetailsMovie
 import java.util.*
 
-class MovieDetails : BaseDao(), MovieDetailsDao {
+class MovieDetailsDaoImpl : BaseDao(), MovieDetailsDao {
 
     companion object {
         private const val DATABASE_TABLE_MOVIES = "movies"

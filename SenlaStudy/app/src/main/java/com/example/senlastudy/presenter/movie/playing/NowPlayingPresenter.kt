@@ -20,7 +20,7 @@ class NowPlayingPresenter(private val apiService: ApiMovie) :
             isLoading = true
             getView().showViewLoading()
             getCompositeDisposable().add(
-                MovieApplication.apiService.getNowPlayingMovie(page)
+               apiService.getNowPlayingMovie(page)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
                     .subscribe(

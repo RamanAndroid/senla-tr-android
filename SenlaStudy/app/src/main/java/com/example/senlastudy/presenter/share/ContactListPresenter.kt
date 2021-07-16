@@ -1,7 +1,6 @@
 package com.example.senlastudy.presenter.share
 
-import android.provider.ContactsContract
-import com.example.senlastudy.database.dao.contactdao.ContactListDao
+import com.example.senlastudy.database.dao.contactdao.ContactsDao
 import com.example.senlastudy.database.entity.Contact
 import com.example.senlastudy.presenter.BasePresenter
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -9,32 +8,15 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.ObservableOnSubscribe
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-class ContactListPresenter(private val contactListDao: ContactListDao) : BasePresenter<ContactListContract.ViewContactList>(),
+class ContactListPresenter(private val contactsDao: ContactsDao) :
+    BasePresenter<ContactListContract.ViewContactList>(),
     ContactListContract.PresenterContactList {
 
     override fun getContactList() {
-
-        val listContact = arrayListOf<Contact>()
-
-        val createObserver = Observable.create(ObservableOnSubscribe<Contact> { emitter ->
-            val uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI
-            val cursor = contentResolver.query(uri, null, null, null, null)
-            if (cursor != null && cursor.moveToFirst()) {
-                do {
-                    val contactName =
-                        cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
-                    val contactNumber =
-                        cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-
-                    listContact.add(
-                        Contact(
-                            nameContact = contactName,
-                            numberContact = contactNumber
-                        )
-                    )
-                } while (cursor.moveToNext())
-                cursor.close()
-            }
+        val createObserver = Observable.create(ObservableOnSubscribe<List<Contact>?> { emitter ->
+            val contactList = contactsDao.getContactList()
+            emitter.onNext(contactList)
+            emitter.onComplete()
         })
 
         createObserver.observeOn(AndroidSchedulers.mainThread())
@@ -49,9 +31,11 @@ class ContactListPresenter(private val contactListDao: ContactListDao) : BasePre
                     getView().hideViewLoading()
                 }
             }
-            .subscribe({ movieTest ->
+            .subscribe({ contactList ->
                 if (isViewAttached()) {
-                    getView().setData(movieTest)
+                    if (!contactList.isNullOrEmpty()) {
+                        getView().setData(contactList)
+                    }
                 }
             }, { t ->
                 if (isViewAttached()) {
@@ -59,5 +43,6 @@ class ContactListPresenter(private val contactListDao: ContactListDao) : BasePre
                 }
             })
     }
+
 }
 
