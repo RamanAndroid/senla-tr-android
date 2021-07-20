@@ -2,16 +2,19 @@ package com.example.senlastudy.fragments.movie
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.senlastudy.MovieApplication
 import com.example.senlastudy.R
+import com.example.senlastudy.ShareActivity
 import com.example.senlastudy.databinding.FragmentMovieDetailBinding
 import com.example.senlastudy.fragments.BaseFragment
 import com.example.senlastudy.presenter.movie.DetailMoviePresenter
@@ -19,12 +22,15 @@ import com.example.senlastudy.presenter.movie.MovieDetailContract
 import com.example.senlastudy.retrofit.pojo.DetailsMovie
 
 
-class  MovieDetailFragment :
+class MovieDetailFragment :
     BaseFragment<MovieDetailContract.PresenterMovieDetail, MovieDetailContract.ViewMovieDetail>(),
     MovieDetailContract.ViewMovieDetail {
     private var _binding: FragmentMovieDetailBinding? = null
     private val binding get() = _binding!!
-    private var movie: Int? = null
+    private var movieId: Int? = null
+    private var movieTitle: String = ""
+    private var movieVoteAverage: String = ""
+    private var movieVoteCount: String = ""
     private var dialog: AlertDialog? = null
 
     companion object {
@@ -41,8 +47,7 @@ class  MovieDetailFragment :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        movie = arguments?.getInt(MOVIE_EXTRA) ?: error("cannot find movie id")
-
+        movieId = arguments?.getInt(MOVIE_EXTRA) ?: error("cannot find movie id")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,8 +61,15 @@ class  MovieDetailFragment :
         _binding = null
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.btnOpenShareActivity.setOnClickListener {
+            openShareActivity()
+        }
+    }
+
     private fun loadMovie() {
-        movie?.let { getPresenter().downloadingDetailsMovie(it) }
+        movieId?.let { getPresenter().downloadingDetailsMovie(it) }
     }
 
     override fun createPresenter(): DetailMoviePresenter {
@@ -68,6 +80,9 @@ class  MovieDetailFragment :
     }
 
     override fun setData(movie: DetailsMovie) {
+        movieTitle = movie.title
+        movieVoteAverage = movie.voteAverage
+        movieVoteCount = movie.voteCount
         binding.apply {
             movie.let {
                 Glide.with(requireContext()).load(it.image).centerCrop()
@@ -107,6 +122,14 @@ class  MovieDetailFragment :
 
     override fun hideViewLoading() {
         binding.downloadMovie.isVisible = false
+    }
+
+    private fun openShareActivity() {
+        val intent = Intent(requireContext(), ShareActivity::class.java)
+        intent.putExtra(ShareActivity.MOVIE_EXTRA_TITLE,movieTitle)
+        intent.putExtra(ShareActivity.MOVIE_EXTRA_VOTE_COUNT,movieVoteCount)
+        intent.putExtra(ShareActivity.MOVIE_EXTRA_VOTE_AVERAGE,movieVoteAverage )
+        startActivity(intent)
     }
 
 }

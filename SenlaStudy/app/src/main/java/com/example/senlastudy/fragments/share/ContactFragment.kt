@@ -1,7 +1,9 @@
 package com.example.senlastudy.fragments.share
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.senlastudy.MovieApplication
+import com.example.senlastudy.ShareActivity
 import com.example.senlastudy.adapter.ContactAdapter
 import com.example.senlastudy.database.entity.Contact
 import com.example.senlastudy.databinding.FragmentContactListBinding
@@ -26,9 +29,26 @@ class ContactFragment :
     private var _binding: FragmentContactListBinding? = null
     private val binding get() = _binding!!
     private val adapter: ContactAdapter by lazy { ContactAdapter(this) }
+    private var movieTitle: String = ""
+    private var movieVoteCount: String = ""
+    private var movieVoteAverage: String = ""
 
     companion object {
         private const val REQUEST_CODE_PERMISSION_READ_CONTACTS = 404
+        private const val REQUEST_CODE_PERMISSION_SEND_SMS = 403
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        movieTitle =
+            arguments?.getString(ShareActivity.MOVIE_EXTRA_TITLE)
+                ?: error("cannot find movie title")
+        movieVoteCount =
+            arguments?.getString(ShareActivity.MOVIE_EXTRA_VOTE_COUNT)
+                ?: error("cannot find movie vote count")
+        movieVoteAverage =
+            arguments?.getString(ShareActivity.MOVIE_EXTRA_VOTE_AVERAGE)
+                ?: error("cannot find movie vote average")
     }
 
     override fun onCreateView(
@@ -70,6 +90,8 @@ class ContactFragment :
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     binding.layoutNoPermission.isVisible = false
                     getContact()
+                } else if (grantResults.isNotEmpty() && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(requireContext(), "Дайте разрешение", Toast.LENGTH_LONG).show()
                 } else {
                     binding.layoutNoPermission.isVisible = true
                 }
@@ -107,11 +129,27 @@ class ContactFragment :
     }
 
     override fun onContactClick(contact: Contact) {
-        Toast.makeText(
-            requireContext(),
-            "Name ${contact.nameContact}, number ${contact.numberContact}",
-            Toast.LENGTH_SHORT
-        ).show()
+
+        val uri: Uri = Uri.parse("smsto:${contact.numberContact}")
+        val intent = Intent(Intent.ACTION_SENDTO, uri)
+        intent.putExtra(
+            Intent.EXTRA_TEXT,
+            "$movieTitle у этого фильма такая оценка $movieVoteAverage($movieVoteCount)"
+        )
+        startActivity(intent)
+
+        /*
+        val smsManager: SmsManager = SmsManager.getDefault()
+        smsManager.sendTextMessage(
+            contact.nameContact,
+            null,
+            "$movieTitle у этого фильма такая оценка $movieVoteAverage($movieVoteCount)",
+            null,
+            null
+        )
+
+         */
+
     }
 
     private fun checkPermissionOfRead() {
@@ -124,9 +162,13 @@ class ContactFragment :
             getContact()
         } else {
             binding.layoutNoPermission.isVisible = true
-            requestPermissions(
+            this.requestPermissions(
                 arrayOf(Manifest.permission.READ_CONTACTS),
                 REQUEST_CODE_PERMISSION_READ_CONTACTS
+            )
+            this.requestPermissions(
+                arrayOf(Manifest.permission.SEND_SMS),
+                REQUEST_CODE_PERMISSION_SEND_SMS
             )
         }
     }

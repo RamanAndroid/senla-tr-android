@@ -51,10 +51,6 @@ class MainActivity : AppCompatActivity(), BaseMovieListFragment.Navigator {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
-        binding.btnOpenShareActivity.setOnClickListener {
-            openShareActivity()
-        }
-
         if (savedInstanceState != null) {
             movieId = savedInstanceState.getInt(TAG_MOVIE_ID)
             if (movieId > 0) {
@@ -191,11 +187,4 @@ class MainActivity : AppCompatActivity(), BaseMovieListFragment.Navigator {
             bindService(intent, connectBoundService, Context.BIND_AUTO_CREATE)
         }
     }
-
-    private fun openShareActivity() {
-        Toast.makeText(this, "Открывается меню с вашими контактами", Toast.LENGTH_LONG).show()
-        val intent = Intent(this, ShareActivity::class.java)
-        startActivity(intent)
-    }
-
 }
